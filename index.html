@@ -19,26 +19,26 @@
     <header>
         <!-- header 왼쪽 -->
         <div id="headerLeft">
-            <nav class="header-Nav">
+            <nav class="header-nav">
                 <!-- 메뉴 버튼 (최대창에서는 숨기기)-->
-                <div id="headerLeft-menu" style="display:none">
-                    <button class="headerLeft-menu-button">
-                        <img src="img/기능_메뉴.png" alt="icon-menu">
-                    </button>
+                <div id="headerLeft-menu">
+                    <i class="fa-solid fa-bars"></i>
                 </div>
                 <!-- 프로그램 아이콘 (누를 시 전체 디렉토리로 이동하게 차후 구현.) -->
                 <div class="headerLeft-programIcon">
                     <img src="img/WhaleWrite-Icon.png" alt="icon-userIcon">
+                    <!-- <a href="#">전체</a> 전체 클릭시 제일 상단 위치로 돌아옴. -->
+                    <!-- <i class="fa-solid fa-arrow-up-long"></i> 전체 클릭시 제일 상단 위치로 돌아옴. -->
                 </div>
                 <!-- 현재 폴더명 -->
-                <div class="headerLeft-currentFolder">
-                    <a href="#">전체</a> <!-- 전체 클릭시 제일 상단 위치로 돌아옴. -->
-                </div>
+                <!-- <div class="headerLeft-currentFolder">
+                    <a href="#">전체</a> <!-- 전체 클릭시 제일 상단 위치로 돌아옴. (*)-->
+                <!-- </div> -->
                 <!-- 메뉴 기능, 폴더들 -->
                 <ul class="header-menu-container">
-                    <li><a href="#"><img src="img/도메인 상관없는 메모 아이콘.png" alt="icon-userIcon"> Home</a></li>
+                    <!-- <li><a href="#">Home</a></li> Home아이콘 일단 삭제 -->
                     <li><a href="#">Folder 1</a></li>
-                    <li><a href="#">Folder 2</a></li>
+                    <!-- <li><a href="#">Folder 2</a></li> -->
                     <li><a href="#">trash</a></li>
                 </ul>
             </nav>
@@ -47,9 +47,7 @@
         <div id="headerRight">
             <!-- 나이트 버튼 -->
             <div class="header-night">
-                <button class="header-night-button">
-                    <img src="img/기능_나이트모드(비활성).png" alt="icon-nightButton">
-                </button>
+                <i class="fa-solid fa-toggle-on"></i> <!--button~img에서 i로 변경(*)-->
             </div>
         </div>
     </header>
@@ -57,21 +55,26 @@
     <!-- main 메인영역 -->
     <main>
         <article class="main-memo">
-            <!-- 메모 좌측 영역 -->
-            <div class="main-memoLeft">
-                <div class="memo-title"><p>제목</p></div>
-                <hr />
-                <div class="memo-text"><p>본문</p></div>
+            <!-- 메모 상단 영역(*) --> 
+            <div class="main-memoTop">
+                <!-- 메모 상단 왼쪽-->
+                <div class="main-memoLeft">
+                    <div class="memo-title"><p>제목</p></div>
+                    <hr />
+                    <div class="memo-text"><p>본문</p></div>
+                </div>
+                <!-- 메모 우측 영역 -->
+                <div class="main-memoRight">
+                    <!-- 즐겨찾기 div박스 삭제(*) -->
+                    <i class="fa-regular fa-star"></i> 
+                    <!-- 폴더 div박스 삭제(*)-->
+                    <i class="fa-regular fa-bookmark"></i>
+                </div>
             </div>
-            <!-- 메모 우측 사이드 영역 -->
-            <div class="main-memoRight">
-                <!-- 즐겨찾기 -->
-                <div role="button" class="memo-star-button"><i class="fa-regular fa-star"></i></div>
-                <!-- 폴더-->
-                <div role="button" class="memo-folder-button"><i class="fa-regular fa-bookmark"></i></div>
-            </div>
+
+
             <!-- 메모 하단 영역 -->
-            <div class="main-memoBottom"></div>
+            <div class="main-memoBottom">
                 <!-- 메모 하단 왼쪽 -->
                 <div class="main-memoBottomLeft">
                     <!-- 이미지 기능 -->
@@ -82,81 +85,134 @@
                     <!-- 저장 기능 -->
                     <!-- 삭제 기능(사이드에 넣을지 하단에 넣을지 고민) -->
                 </div>
+            </div>
+
+
         </article>
-        <hr />
+        <!-- <hr /> -->
         <!-- 즐겨찾기 토글 -->
         <div class="main-starMemoToggle">
-            <button class="starMemoToggle-button"><i class="fas fa-chevron-down"></i></button>
+            <i class="fas fa-chevron-down"></i> <!--button element 삭제(*)-->
         </div>
         <!-- 저장된 메모 영역 -->
         <div id="main-savedMemo">
             <ul class="savedMemo-container">
                 <!-- 예시 메모 1 -->
-                <li class="memo-1">
+                <li class="memo">
                     <section class="savedMemo">
-                        <div class="savedMemoLeft">
-                            <div class="memo-title"><p>제목</p></div>
-                            <hr />
-                            <div class="memo-text"><p>본문</p></div>
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
                         </div>
-                        <div class="savedMemoRight">
-                            <div role="button" class="memoStar-button"><i class="fa-regular fa-star"></i></div>
-                            <div role="button" class="memoFolder-button"><i class="fa-regular fa-bookmark"></i></div>
-                        </div>
-                        <div class="savedMemoBottom"></div>
+                        <div class="savedMemoBottom">
                             <div class="savedMemoBottomLeft"></div>
                             <div class="savedMemoBottomRight"></div>
+                        </div>
                     </section>
                 </li>
                 <!-- 예시 메모 2 -->
-                <li class="memo-2">
+                <li class="memo">
                     <section class="savedMemo">
-                        <div class="savedMemoLeft">
-                            <div class="memo-title"><p>제목</p></div>
-                            <hr />
-                            <div class="memo-text"><p>본문</p></div>
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
                         </div>
-                        <div class="savedMemoRight">
-                            <div role="button" class="memoStar-button"><i class="fa-regular fa-star"></i></div>
-                            <div role="button" class="memoFolder-button"><i class="fa-regular fa-bookmark"></i></div>
-                        </div>
-                        <div class="savedMemoBottom"></div>
+                        <div class="savedMemoBottom">
                             <div class="savedMemoBottomLeft"></div>
                             <div class="savedMemoBottomRight"></div>
+                        </div>
                     </section>
                 </li>
                 <!-- 예시 메모 3 -->
-                <li class="memo-3">
+                <li class="memo">
                     <section class="savedMemo">
-                        <div class="savedMemoLeft">
-                            <div class="memo-title"><p>제목</p></div>
-                            <hr />
-                            <div class="memo-text"><p>본문</p></div>
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
                         </div>
-                        <div class="savedMemoRight">
-                            <div role="button" class="memoStar-button"><i class="fa-regular fa-star"></i></div>
-                            <div role="button" class="memoFolder-button"><i class="fa-regular fa-bookmark"></i></div>
-                        </div>
-                        <div class="savedMemoBottom"></div>
+                        <div class="savedMemoBottom">
                             <div class="savedMemoBottomLeft"></div>
                             <div class="savedMemoBottomRight"></div>
+                        </div>
                     </section>
                 </li>
                 <!-- 예시 메모 4 -->
-                <li class="memo-4">
+                <li class="memo">
                     <section class="savedMemo">
-                        <div class="savedMemoLeft">
-                            <div class="memo-title"><p>제목</p></div>
-                            <hr />
-                            <div class="memo-text"><p>본문</p></div>
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
                         </div>
-                        <div class="savedMemoRight">
-                            <div role="button" class="memoStar-button"><i class="fa-regular fa-star"></i></div>
-                            <div role="button" class="memoFolder-button"><i class="fa-regular fa-bookmark"></i></div>
-                        </div>
-                        <div class="savedMemoBottom"></div>
+                        <div class="savedMemoBottom">
                             <div class="savedMemoBottomLeft"></div>
                             <div class="savedMemoBottomRight"></div>
+                        </div>
+                    </section>
+                </li>
+                <li class="memo">
+                    <section class="savedMemo">
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
+                        </div>
+                        <div class="savedMemoBottom">
+                            <div class="savedMemoBottomLeft"></div>
+                            <div class="savedMemoBottomRight"></div>
+                        </div>
+                    </section>
+                </li>
+                <li class="memo">
+                    <section class="savedMemo">
+                        <div class="savedMemoTop">
+                            <div class="savedMemoLeft">
+                                <div class="memo-title"><p>제목</p></div>
+                                <hr />
+                                <div class="memo-text"><p>본문</p></div>
+                            </div>
+                            <div class="savedMemoRight">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
+                        </div>
+                        <div class="savedMemoBottom">
+                            <div class="savedMemoBottomLeft"></div>
+                            <div class="savedMemoBottomRight"></div>
+                        </div>
                     </section>
                 </li>
             </ul>
@@ -168,6 +224,7 @@
 
     </footer>
 
+    <script src="./js/script.js"></script>
     <!-- 스크립트 영역 -->
 </body>
 
