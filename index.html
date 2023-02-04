@@ -32,7 +32,7 @@
                 </div>
                 <!-- 현재 폴더명 -->
                 <!-- <div class="headerLeft-currentFolder">
-                    <a href="#">전체</a> <!-- 전체 클릭시 제일 상단 위치로 돌아옴. (*)-->
+                    <a href="#">전체</a> 전체 클릭시 제일 상단 위치로 돌아옴. (*)-->
                 <!-- </div> -->
                 <!-- 메뉴 기능, 폴더들 -->
                 <ul class="header-menu-container">
@@ -91,9 +91,11 @@
         </article>
         <!-- <hr /> -->
         <!-- 즐겨찾기 토글 -->
-        <div class="main-starMemoToggle">
-            <i class="fas fa-chevron-down"></i> <!--button element 삭제(*)-->
-        </div>
+        <section>
+            <div class="main-starMemoToggle">
+                <i class="fas fa-chevron-down"></i> <!--button element 삭제(*)-->
+            </div>
+        </section>
         <!-- 저장된 메모 영역 -->
         <div id="main-savedMemo">
             <ul class="savedMemo-container">
@@ -221,7 +223,10 @@
 
     <!-- footer 하단바 -->
     <footer>
-
+        <!-- 차후 부드러운 애니메이션 효과를 위해 JS로 변경 예정 -->
+        <article class="footerRight">
+            <a id="footerRight-clickToTop" href="#" title=”top"><i class="fa-solid fa-arrow-up"></i></a> 
+        </article>
     </footer>
 
     <script src="./js/script.js"></script>
