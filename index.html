@@ -42,9 +42,15 @@
           <!-- 메뉴 기능, 폴더들 -->
           <ul class="header-menu-container">
             <!-- <li><a href="#">Home</a></li> Home아이콘 일단 삭제 -->
-            <li><a href="#">Folder 1</a></li>
+            <li class="header-menu-folder"><a href="#">Folder</a>
+                <ul class="header-menu-folderSub">
+                    <li><a href="#">Folder 1</a></li>
+                    <li><a href="#">Folder 2</a></li>
+                    <li><a href="#">Folder 3</a></li>
+                </ul>
+            </li>
             <!-- <li><a href="#">Folder 2</a></li> -->
-            <li><a href="#">trash</a></li>
+            <li><a href="#">Trash</a></li>
           </ul>
         </nav>
       </div>
@@ -156,7 +162,7 @@
     <footer>
       <!-- 차후 부드러운 애니메이션 효과를 위해 JS로 변경 예정 -->
       <article class="footerRight">
-        <!-- <a id="footerRight-clickToTop" href="#" title=”top"><i class="fa-solid fa-arrow-up"></i></a>  -->
+        <a id="footerRight-clickToTop" title="top"><i class="fa-solid fa-arrow-up"></i></a> 
       </article>
     </footer>
     <section class="modalContent show">
@@ -175,8 +181,9 @@
       <section class="importantMemoSection"></section>
     </section>
     <section class="importantMemoModalOverlay show"></section>
-    <script src="./js/script.js"></script>
+    
     <!-- 스크립트 영역 -->
+    <script src="./js/script.js"></script>
   </body>
 </html>
 

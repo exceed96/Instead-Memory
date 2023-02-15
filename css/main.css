@@ -68,6 +68,30 @@ header #headerLeft .header-nav #headerLeft-menu {
   font-size: var(--header-icon-size);
 }
 
+header .header-menu-folderSub {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  /* z-index: 1; */
+}
+
+header .header-menu-folderSub li a{
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+header .header-menu-folderSub li a:hover {
+  background-color: #698474
+}
+
+header .header-menu-folder:hover .header-menu-folderSub {
+  display: block;
+}
+
 /* header END */
 
 /* main Start */
@@ -75,7 +99,7 @@ header #headerLeft .header-nav #headerLeft-menu {
 main .main-memo {
   width: var(--main-memo-width);
   height: var(--main-memo-height);
-  margin: 36px auto;
+  margin: 72px auto;
   border-radius: var(--main-box-borderRadius);
   box-shadow: var(--main-memo-boxShadow);
   padding: 10px;

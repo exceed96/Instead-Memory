@@ -8,6 +8,13 @@ const sidebar = document.querySelector(".modalContent");
 const importMemoOpen = document.querySelector(".main-starMemoToggle");
 const importMemoSection = document.querySelector(".importantMemoModalContent");
 const importMemoOverlay = document.querySelector(".importantMemoModalOverlay");
+const clickToTop = document.getElementById('footerRight-clickToTop');
+
+const moveclickToTop=()=>{
+    if(window.scrollY > 0 ){
+        window.scrollTo({top:0, behavior:"smooth"});
+    }
+}
 
 memo.forEach((el) => {
   el.addEventListener("mouseover", () => {
@@ -37,3 +44,5 @@ importMemoOverlay.addEventListener("click", () => {
   importMemoOverlay.classList.add("show");
   importMemoSection.classList.add("show");
 });
+
+clickToTop.addEventListener('click',moveclickToTop);
