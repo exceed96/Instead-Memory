@@ -39,6 +39,7 @@ out/
 ### Example user template
 
 # IntelliJ project files
+application-db.properties
 .idea
 *.iml
 out
@@ -47,5 +48,4 @@ gen
 build
 static
 templates
-.properties
 

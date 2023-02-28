@@ -3,6 +3,7 @@ package com.project.memo.web;
 //import com.project.memo.auth.LoginUser;
 //import com.project.memo.auth.dto.SessionUser;
 //import com.project.memo.auth.LoginUser;
+import com.project.memo.auth.LoginUser;
 import com.project.memo.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,11 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     private final HttpSession httpSession;
     @GetMapping("/")
-    public String index(){//Model model,@LoginUser SessionUser user
+    public String index(Model model,@LoginUser SessionUser user){//Model model,@LoginUser SessionUser user
 //        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-//        if(user != null) {
-//            model.addAttribute("userName", user.getName());
-//        }
+        if(user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
     @GetMapping("/memo/save")
