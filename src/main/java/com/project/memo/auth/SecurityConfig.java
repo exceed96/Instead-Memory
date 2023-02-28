@@ -17,17 +17,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 추가
-        http.cors().configurationSource(request -> {
-            var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:3000"));
-            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
-            cors.setAllowedHeaders(List.of("*"));
-            return cors;
-        });
+//        http.cors().configurationSource(request -> {
+//            var cors = new CorsConfiguration();
+//            cors.setAllowedOrigins(List.of("http://localhost:3000"));
+//            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+//            cors.setAllowedHeaders(List.of("*"));
+//            return cors;
+//        });
         http
-//                .csrf().disable()
-//                .headers().frameOptions().disable() //h2-console을 사용하기 위해 쓴것.
-//                .and()
+                .csrf().disable()
+                .headers().frameOptions().disable() //h2-console을 사용하기 위해 쓴것.
+                .and()
                 .authorizeRequests() //URL별 관리설정하는 옵션
                 .antMatchers("/","/css/**","/images/**","/js/**").permitAll()
                 .antMatchers("/v1/**").hasRole(Role.USER.name()) //4

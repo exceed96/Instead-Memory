@@ -18,9 +18,13 @@ public class memoContent {
     private int idx;
     private String title;
     private String content;
+    private String name;
+    private int importante;
     @Builder
-    public memoContent(String title, String content){
+    public memoContent(String title, String content,String name, int importante){
         this.title = title;
         this.content = content;
+        this.importante = importante;
+        this.name = name;
     }
 }
