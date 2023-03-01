@@ -1,1 +1,19 @@
-@import "./main.css";
+/* root.css */
+@import "./root.css";
+
+/* reset.css */
+@import "./reset.css";
+
+/* screens */
+@import "./screens/header/header.css";
+
+@import "./screens/main/mainMemo.css";
+@import "./screens/main/starMemo.css";
+@import "./screens/main/savedMemo.css";
+
+@import "./screens/footer/footer.css";
+@import "./screens/modal.css";
+
+/* media */
+@import "./media/header.css";
+@import "./media/modal.css";

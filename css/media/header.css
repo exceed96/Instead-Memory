@@ -1,0 +1,31 @@
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+  }
+
+  header #headerLeft .header-nav {
+    flex-direction: column;
+  }
+
+  header #headerLeft .header-nav #headerLeft-menu {
+    display: block;
+    position: relative;
+    left: 12px;
+    cursor: pointer;
+  }
+
+  header #headerLeft .header-nav .headerLeft-programIcon {
+    display: none;
+  }
+
+  header #headerLeft .header-nav .header-menu-container {
+    display: none;
+    flex-direction: column;
+  }
+
+  header #headerRight {
+    position: absolute;
+    right: 32px;
+    cursor: pointer;
+  }
+}

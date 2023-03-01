@@ -1,0 +1,25 @@
+{
+  "name": "whalewrite",
+  "version": "1.0.0",
+  "description": "메모 확장프로그램",
+  "main": "index.html",
+  "scripts": {
+    "start": "npm run lite",
+    "lite": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryuwon2407/WhaleWrite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryuwon2407/WhaleWrite/issues"
+  },
+  "homepage": "https://github.com/ryuwon2407/WhaleWrite#readme",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}

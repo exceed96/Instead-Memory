@@ -1,0 +1,136 @@
+#main-savedMemo {
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+#main-savedMemo .savedMemo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, auto));
+  gap: 20px 40px;
+  justify-items: center;
+}
+
+#main-savedMemo .savedMemo-container .memo {
+  width: var(--main-memo-width);
+  height: var(--main-memo-height);
+  margin: 36px;
+  border-radius: var(--main-box-borderRadius);
+  border-top: 1.5px solid black;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  transition: var(--main-box-transition);
+  cursor: pointer;
+}
+
+#main-savedMemo .savedMemo-container .memo:hover {
+  box-shadow: var(--main-memo-boxShadow);
+}
+
+#main-savedMemo .savedMemo-container .memo .savedMemoTop {
+  display: flex;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoTop
+  .savedMemoLeft
+  .memo-title {
+  font-family: "LeferiPoint-WhiteObliqueA";
+  font-size: var(--main-memo-titleFontSize);
+  padding: var(--main-memo-titleTextPadding);
+  border: none;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoTop
+  .savedMemoLeft
+  .memo-title:focus {
+  outline: none;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoTop
+  .savedMemoLeft
+  .memo-text {
+  font-size: var(--main-memo-textFontsize);
+  padding: var(--main-memo-titleTextPadding);
+  resize: none;
+  border: none;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoTop
+  .savedMemoLeft
+  .memo-text::-webkit-scrollbar {
+  display: none;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoTop
+  .savedMemoLeft
+  .memo-text:focus {
+  outline: none;
+}
+
+#main-savedMemo .savedMemo-container .memo .savedMemoBottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoBottom
+  .savedMemoBottomRight {
+  margin-right: 35px;
+}
+
+#main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoBottom
+  .savedMemoBottomRight
+  .main-savedMemoSave {
+  opacity: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+main
+  #main-savedMemo
+  .savedMemo-container
+  .memo
+  .savedMemoBottom
+  .savedMemoBottomRight
+  .main-savedMemoSave:hover {
+  opacity: 1;
+}
+
+#main-savedMemo .savedMemo-container .memo .savedMemoTop .savedMemoRight {
+  flex: 1;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: opacity 0.6s ease;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#main-savedMemo .savedMemo-container .memo .savedMemoTop .savedMemoRight i {
+  margin-top: 10px;
+}

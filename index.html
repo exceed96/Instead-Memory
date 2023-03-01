@@ -42,12 +42,13 @@
           <!-- 메뉴 기능, 폴더들 -->
           <ul class="header-menu-container">
             <!-- <li><a href="#">Home</a></li> Home아이콘 일단 삭제 -->
-            <li class="header-menu-folder"><a href="#">Folder</a>
-                <ul class="header-menu-folderSub">
-                    <li><a href="#">Folder 1</a></li>
-                    <li><a href="#">Folder 2</a></li>
-                    <li><a href="#">Folder 3</a></li>
-                </ul>
+            <li class="header-menu-folder">
+              <a href="#">Folder</a>
+              <ul class="header-menu-folderSub">
+                <li><a href="#">Folder 1</a></li>
+                <li><a href="#">Folder 2</a></li>
+                <li><a href="#">Folder 3</a></li>
+              </ul>
             </li>
             <!-- <li><a href="#">Folder 2</a></li> -->
             <li><a href="#">Trash</a></li>
@@ -76,13 +77,15 @@
               id="memo-title"
               class="memo-title"
               placeholder="제목"
+              name="title"
+              size="30"
             />
             <hr />
             <textarea
-              name=""
+              name="content"
               id="memo-text"
               class="memo-text"
-              cols="29"
+              cols="38"
               rows="3"
               placeholder="본문"
             ></textarea>
@@ -130,13 +133,82 @@
                     id="memo-title"
                     class="memo-title"
                     placeholder="제목"
+                    size="30"
                   />
                   <hr />
                   <textarea
                     name=""
                     id="memo-text"
                     class="memo-text"
-                    cols="29"
+                    cols="30"
+                    rows="3"
+                    placeholder="본문"
+                  ></textarea>
+                </div>
+                <div class="savedMemoRight">
+                  <i class="fa-regular fa-star"></i>
+                  <i class="fa-regular fa-folder"></i>
+                </div>
+              </div>
+              <div class="savedMemoBottom">
+                <div class="savedMemoBottomLeft"></div>
+                <div class="savedMemoBottomRight">
+                  <button class="main-savedMemoSave">저장</button>
+                </div>
+              </div>
+            </form>
+          </li>
+          <li class="memo">
+            <form class="savedMemo">
+              <div class="savedMemoTop">
+                <div class="savedMemoLeft">
+                  <input
+                    type="text"
+                    id="memo-title"
+                    class="memo-title"
+                    placeholder="제목"
+                    size="30"
+                  />
+                  <hr />
+                  <textarea
+                    name=""
+                    id="memo-text"
+                    class="memo-text"
+                    cols="30"
+                    rows="3"
+                    placeholder="본문"
+                  ></textarea>
+                </div>
+                <div class="savedMemoRight">
+                  <i class="fa-regular fa-star"></i>
+                  <i class="fa-regular fa-folder"></i>
+                </div>
+              </div>
+              <div class="savedMemoBottom">
+                <div class="savedMemoBottomLeft"></div>
+                <div class="savedMemoBottomRight">
+                  <button class="main-savedMemoSave">저장</button>
+                </div>
+              </div>
+            </form>
+          </li>
+          <li class="memo">
+            <form class="savedMemo">
+              <div class="savedMemoTop">
+                <div class="savedMemoLeft">
+                  <input
+                    type="text"
+                    id="memo-title"
+                    class="memo-title"
+                    placeholder="제목"
+                    size="30"
+                  />
+                  <hr />
+                  <textarea
+                    name=""
+                    id="memo-text"
+                    class="memo-text"
+                    cols="30"
                     rows="3"
                     placeholder="본문"
                   ></textarea>
@@ -162,16 +234,14 @@
     <footer>
       <!-- 차후 부드러운 애니메이션 효과를 위해 JS로 변경 예정 -->
       <article class="footerRight">
-        <a id="footerRight-clickToTop" title="top"><i class="fa-solid fa-arrow-up"></i></a> 
+        <a id="footerRight-clickToTop" title="top"
+          ><i class="fa-solid fa-arrow-up"></i
+        ></a>
       </article>
     </footer>
     <section class="modalContent show">
       <section class="sideBarHeader">
-        <img
-          src="./이미지_유저 이미지.svg"
-          alt=""
-          class="profileImage"
-        />
+        <img src="./img/icon.png" alt="" class="profileImage" />
         <strong class="userName">sangyeki</strong>
       </section>
       <main></main>
@@ -181,9 +251,10 @@
       <section class="importantMemoSection"></section>
     </section>
     <section class="importantMemoModalOverlay show"></section>
-    
     <!-- 스크립트 영역 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/script.js"></script>
+    <script src="./js/sendTemp.js" defer></script>
   </body>
 </html>
 

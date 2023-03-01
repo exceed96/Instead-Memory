@@ -8,13 +8,13 @@ const sidebar = document.querySelector(".modalContent");
 const importMemoOpen = document.querySelector(".main-starMemoToggle");
 const importMemoSection = document.querySelector(".importantMemoModalContent");
 const importMemoOverlay = document.querySelector(".importantMemoModalOverlay");
-const clickToTop = document.getElementById('footerRight-clickToTop');
+const clickToTop = document.getElementById("footerRight-clickToTop");
 
-const moveclickToTop=()=>{
-    if(window.scrollY > 0 ){
-        window.scrollTo({top:0, behavior:"smooth"});
-    }
-}
+const moveclickToTop = () => {
+  if (window.scrollY > 0) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
 
 memo.forEach((el) => {
   el.addEventListener("mouseover", () => {
@@ -23,16 +23,6 @@ memo.forEach((el) => {
   el.addEventListener("mouseout", () => {
     el.children[0].children[0].children[1].style.opacity = "0";
   });
-});
-
-sidebarOpenBtn.addEventListener("click", () => {
-  sidebarOverlay.classList.remove("show");
-  sidebar.classList.remove("show");
-});
-
-sidebarOverlay.addEventListener("click", () => {
-  sidebarOverlay.classList.add("show");
-  sidebar.classList.add("show");
 });
 
 importMemoOpen.addEventListener("click", () => {
@@ -45,4 +35,14 @@ importMemoOverlay.addEventListener("click", () => {
   importMemoSection.classList.add("show");
 });
 
-clickToTop.addEventListener('click',moveclickToTop);
+sidebarOpenBtn.addEventListener("click", () => {
+  sidebarOverlay.classList.remove("show");
+  sidebar.classList.remove("show");
+});
+
+sidebarOverlay.addEventListener("click", () => {
+  sidebarOverlay.classList.add("show");
+  sidebar.classList.add("show");
+});
+
+clickToTop.addEventListener("click", moveclickToTop);
