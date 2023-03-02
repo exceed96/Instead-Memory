@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface memoContentRepository extends JpaRepository<memoContent, Integer> {
     @Query(value = "SELECT * from memoContent where name=:user", nativeQuery = true)
-    memoContent findByUser(@Param("user") String user);
+    List<memoContent> findByUser(@Param("user") String user);
 }

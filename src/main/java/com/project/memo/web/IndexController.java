@@ -21,9 +21,7 @@ public class IndexController {
     public String index(Model model,@LoginUser SessionUser user){//Model model,@LoginUser SessionUser user
 //        SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null) {
-//            MemoResponseDto memo = memoService.findUser(user.getName());
             model.addAttribute("userName", user.getName());
-//            model.addAttribute("memo",memo);
         }
         return "index";
     }

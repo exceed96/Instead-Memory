@@ -2,15 +2,17 @@ package com.project.memo.web;
 
 import com.project.memo.auth.LoginUser;
 import com.project.memo.auth.dto.SessionUser;
+import com.project.memo.common.ResultMsg;
 import com.project.memo.service.memoService;
+import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import com.project.memo.web.DTO.memoDTO.memoSaveRequestDto;
 import com.project.memo.web.VO.memoVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @CrossOrigin(origins="*")
 @RequiredArgsConstructor
 @RestController
@@ -27,5 +29,11 @@ public class memoApiController {
         memoService.save(requestDto);
     }
 
+    @GetMapping("/v1/memo/find")
+    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(@LoginUser SessionUser user)
+    {
+        System.out.println("이름 : " + user.getName());
+        return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(user.getName()));
+    }
 
 }

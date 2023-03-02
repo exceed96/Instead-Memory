@@ -1,7 +1,11 @@
 package com.project.memo.web.DTO.memoDTO;
 
 import com.project.memo.domain.memoContent.memoContent;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class MemoResponseDto {
     private int idx;
     private String title;

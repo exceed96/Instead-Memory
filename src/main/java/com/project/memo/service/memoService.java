@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class memoService {
@@ -18,10 +21,10 @@ public class memoService {
         memoContentRepository.save(requestDto.toEntity()).getIdx(); // 저장
     }
 
-    public MemoResponseDto findUser(String user) {
-        memoContent memo = memoContentRepository.findByUser(user);
-        MemoResponseDto responseDto = new MemoResponseDto(memo);
-
-        return responseDto;
+    @Transactional
+    public List<MemoResponseDto> findUser(String user){
+        return memoContentRepository.findByUser(user).stream()
+                .map(MemoResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
