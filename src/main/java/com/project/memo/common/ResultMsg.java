@@ -13,7 +13,7 @@ public class ResultMsg<T> {
     private String msg;    // when you want to deliever some messages
     private Boolean status; // related to code but boolean
     private List<T> data;  // When data is list
-    private T item;        // When data is an object
+    private T item; // When data is an object
 
     public ResultMsg(boolean status, String msg){
         this.code = (status) ? "success" : "error";
@@ -34,5 +34,6 @@ public class ResultMsg<T> {
         this.status = status;
         this.item = item;
     }
+
 
 }

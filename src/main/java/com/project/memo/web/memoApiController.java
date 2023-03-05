@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class memoApiController {
@@ -28,12 +28,11 @@ public class memoApiController {
         requestDto = new memoSaveRequestDto(title,content,user.getName(), importante);
         memoService.save(requestDto);
     }
-
+    @CrossOrigin(origins="*")
     @GetMapping("/v1/memo/find")
-    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(@LoginUser SessionUser user)
+    public @ResponseBody ResultMsg<MemoResponseDto> memoFind()//@LoginUser SessionUser user
     {
-        System.out.println("이름 : " + user.getName());
-        return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(user.getName()));
+        return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser("(디스플레이공학전공)김상엽"));
     }
 
 }
