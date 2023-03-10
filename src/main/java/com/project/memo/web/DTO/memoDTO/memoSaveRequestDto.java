@@ -10,22 +10,25 @@ import lombok.NoArgsConstructor;
 public class memoSaveRequestDto {
     private String title;
     private String content;
-    private String name;
+    private String email;
     private int importante;
+    private int bookMark;
     @Builder
-    public memoSaveRequestDto(String title,String content,String name,int importante){
+    public memoSaveRequestDto(String title,String content,String email,int importante, int bookMark){
         this.title = title;
         this.content = content;
-        this.name = name;
+        this.email = email;
         this.importante = importante;
+        this.bookMark = bookMark;
     }
 
     public memoContent toEntity(){
         return memoContent.builder()
                 .title(this.title)
                 .content(this.content)
-                .name(this.name)
+                .email(this.email)
                 .importante(this.importante)
+                .bookMark(this.bookMark)
                 .build();
     }
 }

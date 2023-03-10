@@ -25,7 +25,8 @@ public class memoApiController {
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
         int importante = memoVo.getImportante();
-        requestDto = new memoSaveRequestDto(title,content,user.getName(), importante);
+        int bookMark = memoVo.getBookMark();
+        requestDto = new memoSaveRequestDto(title,content,user.getEmail(), importante,bookMark);
         memoService.save(requestDto);
     }
     @CrossOrigin(origins="*")

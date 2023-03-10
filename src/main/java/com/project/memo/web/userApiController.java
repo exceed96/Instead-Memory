@@ -12,13 +12,4 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class userApiController {
     private final memoService memoService;
-    @CrossOrigin(origins="*")
-    @GetMapping("/user")
-    public ResultMsg<String> user(@LoginUser SessionUser user){//Model model,@LoginUser SessionUser user
-//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(user != null) {
-            return new ResultMsg<String>(true,user.getName());
-        }
-        return new ResultMsg<String>(true,"null");
-    }
 }
