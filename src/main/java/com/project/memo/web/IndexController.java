@@ -1,7 +1,5 @@
 package com.project.memo.web;
 
-import com.project.memo.auth.LoginUser;
-import com.project.memo.auth.dto.SessionUser;
 import com.project.memo.service.memoService;
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +16,13 @@ public class IndexController {
     private final HttpSession httpSession;
     private final memoService memoService;
     @GetMapping("/")
-    public String index(Model model,@LoginUser SessionUser user){//Model model,@LoginUser SessionUser user
+    public String index(Model model){//Model model,@LoginUser SessionUser user
 //        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(user != null) {
-            model.addAttribute("userName", user.getName());
-        }
+//        if(user != null) {
+//            model.addAttribute("userName", user.getName());
+//
+//            model.addAttribute("memo", memoService.findUser(user.getEmail()));
+//        }
         return "index";
     }
 
