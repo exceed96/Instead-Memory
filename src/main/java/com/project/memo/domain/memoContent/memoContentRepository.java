@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface memoContentRepository extends JpaRepository<memoContent, Integer> {
-    @Query(value = "SELECT * from memoContent where name=:user", nativeQuery = true)
-    memoContent findByUser(@Param("user") String user);
+    @Query(value = "SELECT * from memoContent where email=:user", nativeQuery = true)
+    List<memoContent> findByUser(@Param("user") String user);
 }
