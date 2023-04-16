@@ -21,9 +21,9 @@ public interface SocialOauth {
         if (this instanceof GoogleOauth) {
             return SocialLoginType.GOOGLE;
         }
-//        else if (this instanceof NaverOauth) {
-//            return SocialLoginType.NAVER;
-//        }
+        else if (this instanceof NaverOauth) {
+           return SocialLoginType.NAVER;
+        }
         else {
             return null;
         }
