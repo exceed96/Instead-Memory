@@ -7,12 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
-@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/auth")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class OauthController {
     private final OauthService oauthService;
     @RequestMapping(value = "/")
@@ -23,7 +24,6 @@ public class OauthController {
      * 사용자로부터 SNS 로그인 요청을 Social Login Type 을 받아 처리
      * @param socialLoginType (GOOGLE, NAVER)
      */
-    @CrossOrigin("*")
     @GetMapping(value = "/{socialLoginType}")
     public void socialLoginType(
             @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType) {
@@ -37,12 +37,15 @@ public class OauthController {
      * @param code API Server 로부터 넘어노는 code
      * @return SNS Login 요청 결과로 받은 Json 형태의 String 문자열 (access_token, refresh_token 등)
      */
-    @CrossOrigin("*")
     @GetMapping(value = "/{socialLoginType}/callback")
-    public GetSocialOAuthRes callback( //ResponseEntity<String> GetSocialOAuthRes
+    public RedirectView callback( //ResponseEntity<String> GetSocialOAuthRes
                                        @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
                                        @RequestParam(name = "code") String code) throws JsonProcessingException {
         log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
-        return oauthService.requestAccessToken(socialLoginType, code);
+        RedirectView redirectView = new RedirectView();
+        GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
+
+        redirectView.setUrl("http://localhost:3000/?token="+token.getJwtToken());
+        return redirectView;
     }
 }

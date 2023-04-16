@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins="*", allowedHeaders = "*")
+@CrossOrigin(origins="http://localhost:8080", allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class memoApiController {
     private final memoService memoService;
-    @CrossOrigin(origins="*")
+
     @PostMapping("/v1/memo")
     public void memoSave(@RequestBody memoVo memoVo){//, @LoginUser SessionUser user
         memoSaveRequestDto requestDto;
@@ -28,7 +28,6 @@ public class memoApiController {
 //        requestDto = new memoSaveRequestDto(title,content,user.getEmail(), importante,bookMark);
 //        memoService.save(requestDto);
     }
-//    @CrossOrigin(origins="*")
 //    @GetMapping("/v1/memo/find")
 //    public @ResponseBody ResultMsg<MemoResponseDto> memoFind()//@LoginUser SessionUser user
 //    {
