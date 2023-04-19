@@ -1,0 +1,14 @@
+/* savedMemocss */
+
+.main-savedMemo {
+  text-align: center;
+}
+
+.main-savedMemo .savedMemo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, auto));
+  gap: 20px 40px;
+  justify-items: center;
+}
+
+/* starMemocss */

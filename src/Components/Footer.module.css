@@ -1,4 +1,4 @@
-footer .footerRight #footerRight-clickToTop {
+.footer .footerRight .footerRight-clickToTop {
   display: scroll;
   position: fixed;
   bottom: 15px;

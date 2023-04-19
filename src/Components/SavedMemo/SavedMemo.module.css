@@ -1,0 +1,95 @@
+:root {
+  --main-memo-width: 360px;
+  --main-memo-height: 140px;
+  --main-memo-boxShadow: 2px 2px 2px gray;
+  --main-memo-titleFontSize: 20px;
+  --main-memo-textFontsize: 16px;
+  --main-memo-titleTextPadding: 5px;
+  --main-box-borderRadius: 10px;
+  --main-box-transition: box-shadow 0.3s ease-in-out;
+}
+
+.memo {
+  width: var(--main-memo-width);
+  height: var(--main-memo-height);
+  margin: 36px;
+  border-radius: var(--main-box-borderRadius);
+  border-top: 1.5px solid black;
+  border-bottom: 1px solid black;
+  padding: 10px;
+  transition: var(--main-box-transition);
+  cursor: pointer;
+  /* box-shadow: var(--main-memo-boxShadow); */
+}
+
+.memo:hover {
+  box-shadow: var(--main-memo-boxShadow);
+}
+.memo .savedMemoTop {
+  display: flex;
+}
+
+.memo .savedMemoTop .savedMemoLeft .memo-title {
+  font-family: "LeferiPoint-WhiteObliqueA";
+  font-size: var(--main-memo-titleFontSize);
+  padding: var(--main-memo-titleTextPadding);
+  border: none;
+}
+
+.memo .savedMemoTop .savedMemoLeft .memo-title:focus {
+  outline: none;
+}
+
+.memo .savedMemoTop .savedMemoLeft .memo-text {
+  font-size: var(--main-memo-textFontsize);
+  padding: var(--main-memo-titleTextPadding);
+  resize: none;
+  border: none;
+}
+
+.memo .savedMemoTop .savedMemoLeft .memo-text::-webkit-scrollbar {
+  display: none;
+}
+
+.memo .savedMemoTop .savedMemoLeft .memo-text:focus {
+  outline: none;
+}
+
+.memo .savedMemoBottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.memo .savedMemoBottom .savedMemoBottomRight {
+  margin-right: 35px;
+}
+
+.memo .savedMemoBottom .savedMemoBottomRight .main-savedMemoSave {
+  opacity: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.memo .savedMemoBottom .savedMemoBottomRight .main-savedMemoSave:hover {
+  opacity: 1;
+}
+
+.memo .savedMemoTop .savedMemoRight {
+  flex: 1;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: opacity 0.6s ease;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.memo .savedMemoTop .savedMemoRight i {
+  margin-top: 10px;
+}

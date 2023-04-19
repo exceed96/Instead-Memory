@@ -1,0 +1,18 @@
+.importantMemoModalOverlay {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.importantMemoModalContent {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 50vh;
+  background-color: white;
+  z-index: 2;
+  border-radius: 20px 20px 0 0;
+}

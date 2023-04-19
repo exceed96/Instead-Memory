@@ -1,3 +1,14 @@
+:root {
+  --main-memo-width: 360px;
+  --main-memo-height: 140px;
+  --main-memo-boxShadow: 2px 2px 2px gray;
+  --main-memo-titleFontSize: 20px;
+  --main-memo-textFontsize: 16px;
+  --main-memo-titleTextPadding: 5px;
+  --main-box-borderRadius: 10px;
+  --main-box-transition: box-shadow 0.3s ease-in-out;
+}
+
 .main-memo {
   width: var(--main-memo-width);
   height: var(--main-memo-height);
@@ -67,4 +78,18 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 16px;
+}
+
+/* savedMemocss */
+
+.main-savedMemo {
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.main-savedMemo .savedMemo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, auto));
+  gap: 20px 40px;
+  justify-items: center;
 }
