@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class memoVo {
     String title;
     String content;
-    int importante;
-    int bookMark;
+//    int importante;
+//    int bookMark;
 }

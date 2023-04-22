@@ -1,6 +1,7 @@
 package com.project.memo.auth.sequrity;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,6 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() //URL별 관리설정하는 옵션
                 .antMatchers("/","/css/**","/images/**","/js/**","/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest().authenticated()//anyRequest -> 설정된 값 이외 나머지 URL 인증된 사용자만
                 .and()
                 .logout().permitAll()

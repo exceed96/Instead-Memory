@@ -11,9 +11,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://43.200.92.244:8000")
 @RequestMapping(value = "/auth")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class OauthController {
     private final OauthService oauthService;
     @RequestMapping(value = "/")
@@ -45,7 +45,7 @@ public class OauthController {
         RedirectView redirectView = new RedirectView();
         GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
 
-        redirectView.setUrl("http://localhost:3000/?token="+token.getJwtToken());
+        redirectView.setUrl("http://43.200.92.244:8000/?token="+token.getJwtToken());
         return redirectView;
     }
 }
