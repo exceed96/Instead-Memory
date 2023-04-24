@@ -32,4 +32,9 @@ public class memoService {
     public void deleted(int idx) {
         memoContentRepository.menuDelete(idx);
     }
+
+    @Transactional
+    public int findMaxIndex(String email) {
+        return memoContentRepository.maxIndex(email);
+    }
 }

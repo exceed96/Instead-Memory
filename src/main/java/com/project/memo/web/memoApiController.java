@@ -39,6 +39,7 @@ public class memoApiController {
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
+        int max = memoService.findMaxIndex(email);
 //        int importante = memoVo.getImportante();
 //        int bookMark = memoVo.getBookMark();
         requestDto = new memoSaveRequestDto(title,content,email, 0,0);

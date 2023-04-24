@@ -21,13 +21,13 @@ public class memoContent {
     private String title;
     private String content;
     private String email;
-    private int importante;
+    private int important;
     private int bookMark;
     @Builder
-    public memoContent(String title, String content,String email, int importante, int bookMark){
+    public memoContent(String title, String content,String email, int important, int bookMark){
         this.title = title;
         this.content = content;
-        this.importante = importante;
+        this.important = important;
         this.email = email;
         this.bookMark = bookMark;
     }

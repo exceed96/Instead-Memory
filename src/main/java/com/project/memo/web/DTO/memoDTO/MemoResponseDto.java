@@ -11,14 +11,14 @@ public class MemoResponseDto {
     private String title;
     private String content;
     private String email;
-    private int importante;
+    private int important;
     private int bookMark;
     public MemoResponseDto(memoContent entity){
         this.idx = entity.getIdx();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.email = entity.getEmail();
-        this.importante = entity.getImportante();
+        this.important = entity.getImportant();
         this.bookMark = entity.getBookMark();
     }
 }
