@@ -2,12 +2,19 @@ package com.project.memo.domain.memoContent;
 
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface memoContentRepository extends JpaRepository<memoContent, Integer> {
-    @Query(value = "SELECT * from memoContent where email=:user", nativeQuery = true)
-    List<memoContent> findByUser(@Param("user") String user);
+    @Query(value = "SELECT * from memoContent where email=:email", nativeQuery = true)
+    List<memoContent> findByUser(@Param("email") String email);
+
+    @Transactional
+    @Modifying
+    @Query(value ="DELETE from memoContent where idx=:idx", nativeQuery = true)
+    int menuDelete(@Param("idx") int idx);
 }

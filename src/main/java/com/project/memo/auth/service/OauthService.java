@@ -59,7 +59,6 @@ public class OauthService {
             naverUser = naverOauth.getUserInfo(userInfoResponse);
             user_id=naverUser.getResponse().get("email");
         }
-
 //        System.out.println(googleUser.name+" " + googleUser.getEmail() + " " + googleUser.picture);
 //        userSaveRequestDto = new UserSaveRequestDto(googleUser.name, "20162330@vision.hoseo.edu", googleUser.picture);// googleUser.email,
 //        userService.save(userSaveRequestDto);
@@ -69,7 +68,14 @@ public class OauthService {
             if (socialLoginType.toString().equals("GOOGLE")) {
                 String jwtToken = jwtService.createJwt(user_id, googleUser.getName());
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
-                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.name, jwtToken, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
+                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
+                boolean check = getNameCheck(googleUser.getEmail());
+                System.out.println(check);
+                if (check) {
+                    System.out.println("a");
+                    userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(), googleUser.getEmail(), googleUser.getPicture(), getSocialOAuthRes.getJwtToken());
+                    userService.save(userSaveRequestDto);
+                }
                 return getSocialOAuthRes;
             }
             else if (socialLoginType.toString().equals("NAVER"))
@@ -77,6 +83,14 @@ public class OauthService {
                 String jwtToken = jwtService.createJwt(user_id, naverUser.getResponse().get("name"));
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
                 GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(naverUser.getResponse().get("name"), jwtToken, naverToken.getAccess_token(), naverToken.getToken_type());
+                boolean check = getNameCheck(naverUser.getResponse().get("email"));
+                if (check) {
+                    userSaveRequestDto = new UserSaveRequestDto(naverUser.getResponse().get("name"),
+                            naverUser.getResponse().get("email"),
+                            naverUser.getResponse().get("profile_image"),
+                            getSocialOAuthRes.getJwtToken());
+                    userService.save(userSaveRequestDto);
+                }
                 return getSocialOAuthRes;
             }
         }
@@ -88,5 +102,13 @@ public class OauthService {
                 .filter(x -> x.type() == socialLoginType)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("알 수 없는 SocialLoginType 입니다."));
+    }
+    private boolean getNameCheck(String email)
+    {
+        String emailCheck = userService.findUserEmail(email);
+        System.out.println(emailCheck);
+        if (emailCheck == null)
+            return true;
+        return false;
     }
 }

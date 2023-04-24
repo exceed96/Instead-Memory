@@ -14,4 +14,8 @@ public class userService {
     public void save(UserSaveRequestDto requestDto){
         userRepository.save(requestDto.toEntity()).getIdx(); // 저장
     }
+    @Transactional
+    public String findUserEmail(String email){
+        return userRepository.findAllIndex(email);
+    }
 }

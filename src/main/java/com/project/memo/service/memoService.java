@@ -22,9 +22,14 @@ public class memoService {
     }
 
     @Transactional
-    public List<MemoResponseDto> findUser(String user){
-        return memoContentRepository.findByUser(user).stream()
+    public List<MemoResponseDto> findUser(String email){
+        return memoContentRepository.findByUser(email).stream()
                 .map(MemoResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleted(int idx) {
+        memoContentRepository.menuDelete(idx);
     }
 }

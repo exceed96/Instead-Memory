@@ -1,6 +1,7 @@
 package com.project.memo.common;
 
 
+import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +35,5 @@ public class ResultMsg<T> {
         this.status = status;
         this.item = item;
     }
-
 
 }

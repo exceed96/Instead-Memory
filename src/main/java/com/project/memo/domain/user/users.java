@@ -27,12 +27,15 @@ public class users {
     @Column(nullable = false)
     private Role role;
 
+    @Column
+    private String tokenJwt;
     @Builder
-    public users(String name, String email, String picture, Role role) {
+    public users(String name, String email, String picture, Role role,String tokenJwt) {
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
+        this.tokenJwt = tokenJwt;
     }
 
     public users update(String name, String picture) {
