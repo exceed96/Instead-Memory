@@ -29,12 +29,8 @@ public class memoService {
     }
 
     @Transactional
-    public void deleted(int idx) {
-        memoContentRepository.menuDelete(idx);
+    public void deleted(String uuid) {
+        memoContentRepository.menuDelete(uuid);
     }
 
-    @Transactional
-    public int findMaxIndex(String email) {
-        return memoContentRepository.maxIndex(email);
-    }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpHeaders;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,14 +36,15 @@ public class memoApiController {
         memoSaveRequestDto requestDto;
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
+
         String jwtToken = request.getHeader("Authorization");
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
-        int max = memoService.findMaxIndex(email);
+        String id = UUID.randomUUID().toString();
 //        int importante = memoVo.getImportante();
 //        int bookMark = memoVo.getBookMark();
-        requestDto = new memoSaveRequestDto(title,content,email, 0,0);
+        requestDto = new memoSaveRequestDto(title,content,email, 0,0,id);
         memoService.save(requestDto);
         return true;
     }
@@ -53,12 +55,12 @@ public class memoApiController {
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모find 이메일 입니다. " +email);
-
+        //!! email값에 아직 아무 메모내용이없을때 에러뜨는거 수정해야함
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
     }
-    @DeleteMapping("/v1/memo/delete/{idx}")
-    public void memoDelete(@PathVariable("idx") int idx){
-        System.out.println(idx);
-        memoService.deleted(idx);
+    @DeleteMapping("/v1/memo/delete/{uuid}")
+    public void memoDelete(@PathVariable("uuid") String uuid){
+        System.out.println(uuid);
+        memoService.deleted(uuid);
     }
 }

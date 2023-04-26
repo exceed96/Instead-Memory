@@ -15,9 +15,7 @@ public interface memoContentRepository extends JpaRepository<memoContent, Intege
 
     @Transactional
     @Modifying
-    @Query(value ="DELETE from memoContent where idx=:idx", nativeQuery = true)
-    int menuDelete(@Param("idx") int idx);
+    @Query(value ="DELETE from memoContent where uuid=:uuid", nativeQuery = true)
+    int menuDelete(@Param("uuid") String uuid);
 
-    @Query(value = "SELECT max(idx) from memoContent where email=:email", nativeQuery = true)
-    int maxIndex(@Param("email") String email);
 }

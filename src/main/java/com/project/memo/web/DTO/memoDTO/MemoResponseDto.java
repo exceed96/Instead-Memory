@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MemoResponseDto {
-    private int idx;
     private String title;
     private String content;
     private String email;
     private int important;
     private int bookMark;
+    private String uuid;
     public MemoResponseDto(memoContent entity){
-        this.idx = entity.getIdx();
+        this.uuid = entity.getUuid();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.email = entity.getEmail();
