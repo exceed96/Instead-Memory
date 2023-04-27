@@ -1,33 +1,55 @@
-import React, { useRef } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./WriteMemo.module.css";
+import axios from "axios";
+import SavedMemo from "../SavedMemo/SavedMemo";
 
 const WriteMemo = (props) => {
-  const sendtitle = useRef("");
-  const sendmainText = useRef("");
+  // const sendtitle = useRef("");
+  // const sendmainText = useRef("");
+  const [inputTitle, setInputTitle] = useState("");
+  const [mainText, setMainText] = useState("");
+
+  const changeTitleHandler = (evt) => {
+    setInputTitle(evt.target.value);
+  };
+
+  const changeMainTextHandler = (evt) => {
+    setMainText(evt.target.value);
+  };
 
   const postUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo";
 
-  const sendData = JSON.stringify({
-    title: sendtitle.current.value,
-    content: sendmainText.current.value,
-  });
-
-  const memoSubmitHandler = async (event) => {
-    event.preventDefault();
-    console.log(sendData);
-    await fetch(postUrl, {
-      method: "post",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-      body: sendData,
-    });
-    // const data = await response.json();
-    // console.log(data);
+  const getUrl =
+    "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
+  const sendData = {
+    title: inputTitle,
+    content: mainText,
   };
+  const header = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+  };
+
+  const memoSubmitHandler = async (evt) => {
+    evt.preventDefault();
+    const finalData = JSON.stringify({ title: inputTitle, content: mainText });
+    const response = await axios({
+      method: "post",
+      url: postUrl,
+      headers: header,
+      data: finalData,
+    });
+    props.setGetData(true);
+    //const data = await axios({
+    //  method: "get",
+    // url: getUrl,
+    // headers : header,
+    //})
+    //const sendData = data.data.data.map((el) => (<SavedMemo title={el.title} content={el.content} uuid={el.uuid}/>));
+    //props.setReceiveData(sendData);
+  };
+
   return (
     <form className={styles["main-memo"]} onSubmit={memoSubmitHandler}>
       {/* <!-- 메모 상단 영역(*) --> */}
@@ -41,7 +63,8 @@ const WriteMemo = (props) => {
             placeholder="제목"
             name="title"
             size="30"
-            ref={sendtitle}
+            onChange={changeTitleHandler}
+            // ref={sendtitle}
           />
           <hr />
           <textarea
@@ -51,7 +74,8 @@ const WriteMemo = (props) => {
             cols="38"
             rows="3"
             placeholder="본문"
-            ref={sendmainText}
+            onChange={changeMainTextHandler}
+            // ref={sendmainText}
           ></textarea>
         </div>
         {/* <!-- 메모 우측 영역 --> */}
