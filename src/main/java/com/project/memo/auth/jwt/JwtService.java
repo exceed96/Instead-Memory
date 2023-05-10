@@ -1,5 +1,6 @@
 package com.project.memo.auth.jwt;
 
+import com.project.memo.auth.token.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -22,16 +23,27 @@ public class JwtService {
      */
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
-    public String createJwt(String userNum, String username){
+    public Token createJwt(String userNum, String username){
         Date now = new Date();
-        return Jwts.builder()
+
+        String accessToken = Jwts.builder()
                 .setHeaderParam("type","jwt")
                 .claim("userNum",userNum)
                 .claim("username",username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365))) //발급날짜 계산
+                .setExpiration(new Date(System.currentTimeMillis()+1*(60 * 30))) //발급날짜 계산
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .setHeaderParam("type","jwt")
+                .claim("userNum",userNum)
+                .claim("username",username)
+                .setIssuedAt(now)
+                .setExpiration(new Date(System.currentTimeMillis()+1*(60 * 60 * 24 * 30))) //발급날짜 계산
+                .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
+                .compact();
+        return  Token.builder().accessToken(accessToken).refreshToken(refreshToken).email(userNum).build();
     }
 
     /*

@@ -29,8 +29,19 @@ public class memoService {
     }
 
     @Transactional
+    public List<MemoResponseDto> findMemo(String uuid){
+        return memoContentRepository.findMemoLine(uuid).stream()
+                .map(MemoResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public void deleted(String uuid) {
         memoContentRepository.menuDelete(uuid);
+    }
+    @Transactional
+    public void memoUpdate(String uuid,String title,String content, int important) {
+        memoContentRepository.memoUpdated(uuid,important,title,content);
     }
 
 }

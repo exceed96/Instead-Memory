@@ -20,14 +20,12 @@ public class UserSaveRequestDto {
     private String picture;
 
     private Role role;
-    private String tokenJwt;
 
     @Builder
-    public UserSaveRequestDto(String name,String email,String picture,String tokenJwt){
+    public UserSaveRequestDto(String name,String email,String picture){
         this.name = name;
         this.email = email;
         this.picture = picture;
-        this.tokenJwt =tokenJwt;
     }
 
     public users toEntity(){
@@ -36,7 +34,6 @@ public class UserSaveRequestDto {
                 .picture(this.picture)
                 .email(this.email)
                 .role(Role.USER)
-                .tokenJwt(this.tokenJwt)
                 .build();
     }
 }

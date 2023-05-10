@@ -3,6 +3,7 @@ package com.project.memo.auth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.memo.auth.model.*;
 import com.project.memo.auth.jwt.JwtService;
+import com.project.memo.auth.token.Token;
 import com.project.memo.auth.type.SocialLoginType;
 import com.project.memo.service.userService;
 import com.project.memo.web.DTO.userDTO.UserSaveRequestDto;
@@ -59,36 +60,35 @@ public class OauthService {
             naverUser = naverOauth.getUserInfo(userInfoResponse);
             user_id=naverUser.getResponse().get("email");
         }
-//        System.out.println(googleUser.name+" " + googleUser.getEmail() + " " + googleUser.picture);
-//        userSaveRequestDto = new UserSaveRequestDto(googleUser.name, "20162330@vision.hoseo.edu", googleUser.picture);// googleUser.email,
-//        userService.save(userSaveRequestDto);
 
         if(user_id!=""){
             //서버에 user가 존재하면 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
             if (socialLoginType.toString().equals("GOOGLE")) {
-                String jwtToken = jwtService.createJwt(user_id, googleUser.getName());
+                Token jwtToken = jwtService.createJwt(user_id, googleUser.getName());
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
-                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken, oAuthToken.getAccess_token(), oAuthToken.getToken_type());
+                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken.getAccessToken(),
+                        oAuthToken.getAccess_token(),oAuthToken.getRefresh_token(), oAuthToken.getToken_type());
                 boolean check = getNameCheck(googleUser.getEmail());
                 System.out.println(check);
                 if (check) {
                     System.out.println("a");
-                    userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(), googleUser.getEmail(), googleUser.getPicture(), getSocialOAuthRes.getJwtToken());
+                    userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(),
+                            googleUser.getEmail(), googleUser.getPicture());
                     userService.save(userSaveRequestDto);
                 }
                 return getSocialOAuthRes;
             }
             else if (socialLoginType.toString().equals("NAVER"))
             {
-                String jwtToken = jwtService.createJwt(user_id, naverUser.getResponse().get("name"));
+                Token jwtToken = jwtService.createJwt(user_id, naverUser.getResponse().get("name"));
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
-                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(naverUser.getResponse().get("name"), jwtToken, naverToken.getAccess_token(), naverToken.getToken_type());
+                GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(naverUser.getResponse().get("name"), jwtToken.getAccessToken(),
+                        naverToken.getAccess_token(), naverToken.getRefresh_token(),naverToken.getToken_type());
                 boolean check = getNameCheck(naverUser.getResponse().get("email"));
                 if (check) {
                     userSaveRequestDto = new UserSaveRequestDto(naverUser.getResponse().get("name"),
                             naverUser.getResponse().get("email"),
-                            naverUser.getResponse().get("profile_image"),
-                            getSocialOAuthRes.getJwtToken());
+                            naverUser.getResponse().get("profile_image"));
                     userService.save(userSaveRequestDto);
                 }
                 return getSocialOAuthRes;

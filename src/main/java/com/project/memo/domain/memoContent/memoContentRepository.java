@@ -18,4 +18,12 @@ public interface memoContentRepository extends JpaRepository<memoContent, Intege
     @Query(value ="DELETE from memoContent where uuid=:uuid", nativeQuery = true)
     int menuDelete(@Param("uuid") String uuid);
 
+    @Query(value = "SELECT * from memoContent where uuid=:uuid", nativeQuery = true)
+    List<memoContent> findMemoLine(@Param("uuid") String uuid);
+
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
+    int memoUpdated(@Param("uuid") String uuid, @Param("important") int important,@Param("title") String title,@Param("content") String content);
+
 }

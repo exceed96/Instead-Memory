@@ -31,7 +31,7 @@ public class memoApiController {
     private String JWT_SECRET_KEY;
 
 //    @PostMapping("/v1/memo")
-    @RequestMapping(value = "/v1/memo")
+    @RequestMapping(value = "/v1/memo") //처음 저장하는 api
     public boolean memoSave(@RequestBody memoVo memoVo,HttpServletRequest request){//, @LoginUser SessionUser user
         memoSaveRequestDto requestDto;
         String title = memoVo.getTitle();
@@ -41,14 +41,28 @@ public class memoApiController {
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
-        String id = UUID.randomUUID().toString();
-//        int importante = memoVo.getImportante();
+        String id = UUID.randomUUID().toString(); // idx(int)로 구분하지 않고 랜덤 해시값을 통해 메모 구분
+        int important = memoVo.getImportant();
 //        int bookMark = memoVo.getBookMark();
-        requestDto = new memoSaveRequestDto(title,content,email, 0,0,id);
+        requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
         memoService.save(requestDto);
         return true;
     }
-    @GetMapping("/v1/memo/find")
+    @PutMapping(value = "/v1/memo/update") //important 하는 api
+    public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request){
+        String jwtToken = request.getHeader("Authorization");
+        int important = memoVo.getImportant();
+        String title = memoVo.getTitle();
+        String content = memoVo.getContent();
+        String uuid = memoVo.getUuid();
+
+        //uuid와 같은 메모에 대한 전체를 찾아오기
+        List<MemoResponseDto> list = memoService.findMemo(uuid);
+        //important변경값 업데이트 저장하기
+        memoService.memoUpdate(uuid,title, content, important);
+        return true;
+    }
+    @GetMapping("/v1/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
     public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request)//@LoginUser SessionUser user
     {
         String jwtToken = request.getHeader("Authorization");
