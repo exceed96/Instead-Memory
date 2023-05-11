@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.memo.auth.model.*;
 import com.project.memo.auth.jwt.JwtService;
 import com.project.memo.auth.token.Token;
+import com.project.memo.auth.token.tokenService;
 import com.project.memo.auth.type.SocialLoginType;
 import com.project.memo.service.userService;
+import com.project.memo.web.DTO.tokenDTO.TokenSaveRequestDto;
 import com.project.memo.web.DTO.userDTO.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ public class OauthService {
     UserSaveRequestDto userSaveRequestDto;
     private final userService userService;
     private final JwtService jwtService;
+    private final tokenService tokenService;
     public void request(SocialLoginType socialLoginType) {
         SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
         String redirectURL = socialOauth.getOauthRedirectURL();
@@ -47,15 +50,21 @@ public class OauthService {
 
         NaverOAuthToken naverToken = null;
         NaverUser naverUser = null;
+
+        TokenSaveRequestDto tokenSave = null;
         //응답객체가 Json형식 이를 deserialization해서 자바 객체에 담는다.
         if (socialLoginType.toString() == "GOOGLE") {
             oAuthToken = googleOauth.getAccessToken(accessTokenResponse);
+            System.out.println("google login 액세스 토큰 " + oAuthToken.getAccess_token());
+            System.out.println("google login 리프레시 토큰 " + oAuthToken.getRefresh_token());
+
             userInfoResponse = googleOauth.requeseUserInfo(oAuthToken);//액세스 토큰을 다시 구글로 보내 구글에 저장된 사용자 정보가 담긴 응답객체를 받아온다.
             googleUser = googleOauth.getUserInfo(userInfoResponse);//다시 json형식의 응답객체를 자바객체로 역직렬화
             user_id = googleUser.getEmail();
         }
         else if (socialLoginType.toString().equals("NAVER")) {
             naverToken = naverOauth.getAccessToken(accessTokenResponse);
+
             userInfoResponse = naverOauth.requeseUserInfo(naverToken);
             naverUser = naverOauth.getUserInfo(userInfoResponse);
             user_id=naverUser.getResponse().get("email");
@@ -65,13 +74,19 @@ public class OauthService {
             //서버에 user가 존재하면 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
             if (socialLoginType.toString().equals("GOOGLE")) {
                 Token jwtToken = jwtService.createJwt(user_id, googleUser.getName());
+                System.out.println("jwtToken 에서 액세스 토큰 " + jwtToken.getAccessToken());
+                System.out.println("jwtToken 에서 리프레시 토큰 " + jwtToken.getRefreshToken());
+
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
                 GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken.getAccessToken(),
                         oAuthToken.getAccess_token(),oAuthToken.getRefresh_token(), oAuthToken.getToken_type());
                 boolean check = getNameCheck(googleUser.getEmail());
                 System.out.println(check);
                 if (check) {
-                    System.out.println("a");
+                    /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */
+                    tokenSave = new TokenSaveRequestDto(oAuthToken.getAccess_token(),oAuthToken.getRefresh_token(),googleUser.getEmail());
+                    tokenService.save(tokenSave);
+                    /* user 저장된게 없을때 저장해주기 */
                     userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(),
                             googleUser.getEmail(), googleUser.getPicture());
                     userService.save(userSaveRequestDto);
@@ -86,6 +101,10 @@ public class OauthService {
                         naverToken.getAccess_token(), naverToken.getRefresh_token(),naverToken.getToken_type());
                 boolean check = getNameCheck(naverUser.getResponse().get("email"));
                 if (check) {
+                    /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */
+                    tokenSave = new TokenSaveRequestDto(naverToken.getAccess_token(),naverToken.getRefresh_token(),naverUser.getResponse().get("email"));
+                    tokenService.save(tokenSave);
+                    /* user 저장된게 없을때 저장해주기 */
                     userSaveRequestDto = new UserSaveRequestDto(naverUser.getResponse().get("name"),
                             naverUser.getResponse().get("email"),
                             naverUser.getResponse().get("profile_image"));
