@@ -45,7 +45,7 @@ public class OauthController {
         RedirectView redirectView = new RedirectView();
         GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
 
-        redirectView.setUrl("http://43.200.92.244:8000/?token="+token.getJwtToken());
+        redirectView.setUrl("http://43.200.92.244:8000/memo/?token="+token.getJwtToken());
         return redirectView;
     }
 }

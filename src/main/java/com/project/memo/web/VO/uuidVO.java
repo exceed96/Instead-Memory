@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class memoVo {
-    String title;
-    String content;
-    boolean important;
+public class uuidVO {
     String uuid;
 //    int bookMark;
 }

@@ -10,6 +10,7 @@ import com.project.memo.service.memoService;
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import com.project.memo.web.DTO.memoDTO.memoSaveRequestDto;
 import com.project.memo.web.VO.memoVo;
+import com.project.memo.web.VO.uuidVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -38,20 +39,21 @@ public class memoApiController {
         String content = memoVo.getContent();
 
         String jwtToken = request.getHeader("Authorization");
+        System.out.println("jwtToken 출력해보기"+ jwtToken);
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
         String id = UUID.randomUUID().toString(); // idx(int)로 구분하지 않고 랜덤 해시값을 통해 메모 구분
-        int important = memoVo.getImportant();
+        boolean important = memoVo.isImportant();
 //        int bookMark = memoVo.getBookMark();
         requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
         memoService.save(requestDto);
         return true;
     }
-    @PutMapping(value = "/v1/memo/update") //important 하는 api
+    @PutMapping(value = "/v1/memo/update") //memo 전체 업데이ㅡ
     public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request){
         String jwtToken = request.getHeader("Authorization");
-        int important = memoVo.getImportant();
+        boolean important = memoVo.isImportant();
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
         String uuid = memoVo.getUuid();
@@ -61,6 +63,10 @@ public class memoApiController {
         //important변경값 업데이트 저장하기
         memoService.memoUpdate(uuid,title, content, important);
         return true;
+     }
+    @GetMapping(value = "/v1/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
+    public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,HttpServletRequest request){
+        return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUserMemo(uuid));
     }
     @GetMapping("/v1/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
     public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request)//@LoginUser SessionUser user
@@ -71,6 +77,17 @@ public class memoApiController {
         System.out.println("여기는 메모find 이메일 입니다. " +email);
         //!! email값에 아직 아무 메모내용이없을때 에러뜨는거 수정해야함
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
+    }
+    @PutMapping(value = "/v1/memo/important") //important만 업데이트 해주는 api
+    public String memoImportant(@RequestBody uuidVO uuid, HttpServletRequest request){
+        String id = uuid.getUuid();
+        boolean important = memoService.findMemoImportant(id);
+        System.out.println("v1/memo/important : " + important);
+        if (important == false) important = true;
+        else important = false;
+        System.out.println("v1/memo/important : change " + important);
+        memoService.updateImportant(id, important);
+        return "200";
     }
     @DeleteMapping("/v1/memo/delete/{uuid}")
     public void memoDelete(@PathVariable("uuid") String uuid){

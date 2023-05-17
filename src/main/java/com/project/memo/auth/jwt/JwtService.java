@@ -1,10 +1,7 @@
 package com.project.memo.auth.jwt;
 
 import com.project.memo.auth.token.Token;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -31,21 +28,31 @@ public class JwtService {
                 .claim("userNum",userNum)
                 .claim("username",username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(60 * 30))) //발급날짜 계산
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*30))) //발급날짜 계산 유효기간 30분
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
-                .compact();
+                .compact(); // 생성
 
         String refreshToken = Jwts.builder()
                 .setHeaderParam("type","jwt")
                 .claim("userNum",userNum)
                 .claim("username",username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(60 * 60 * 24 * 30))) //발급날짜 계산
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*30))) //발급날짜 계산 유효기간 1년 7일로 하고싶다면 1*(1000*60*60*24*7)
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
                 .compact();
         return  Token.builder().accessToken(accessToken).refreshToken(refreshToken).email(userNum).build();
     }
-
+    /* 토큰의 유효성 + 만료 일자 */
+    public boolean validateToken(String jwtToken)
+    {
+        try{
+            Jws<Claims> claims = Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        }catch(ExpiredJwtException e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
     /*
     Header에서 X-ACCESS-TOKEN 으로 JWT 추출
     @return String

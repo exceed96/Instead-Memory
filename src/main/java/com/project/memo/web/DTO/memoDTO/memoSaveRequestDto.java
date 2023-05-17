@@ -11,11 +11,11 @@ public class memoSaveRequestDto {
     private String title;
     private String content;
     private String email;
-    private int important;
+    private boolean important;
     private int bookMark;
     private String uuid;
     @Builder
-    public memoSaveRequestDto(String title,String content,String email,int important, int bookMark,String uuid){
+    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid){
         this.title = title;
         this.content = content;
         this.email = email;

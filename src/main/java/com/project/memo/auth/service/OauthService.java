@@ -74,8 +74,8 @@ public class OauthService {
             //서버에 user가 존재하면 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
             if (socialLoginType.toString().equals("GOOGLE")) {
                 Token jwtToken = jwtService.createJwt(user_id, googleUser.getName());
-                System.out.println("jwtToken 에서 액세스 토큰 " + jwtToken.getAccessToken());
-                System.out.println("jwtToken 에서 리프레시 토큰 " + jwtToken.getRefreshToken());
+//                System.out.println("jwtToken 에서 액세스 토큰 " + jwtToken.getAccessToyken());
+//                System.out.println("jwtToken 에서 리프레시 토큰 " + jwtToken.getRefreshToken());
 
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
                 GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken.getAccessToken(),
@@ -84,7 +84,7 @@ public class OauthService {
                 System.out.println(check);
                 if (check) {
                     /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */
-                    tokenSave = new TokenSaveRequestDto(oAuthToken.getAccess_token(),oAuthToken.getRefresh_token(),googleUser.getEmail());
+                    tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
                     tokenService.save(tokenSave);
                     /* user 저장된게 없을때 저장해주기 */
                     userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(),
@@ -102,7 +102,7 @@ public class OauthService {
                 boolean check = getNameCheck(naverUser.getResponse().get("email"));
                 if (check) {
                     /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */
-                    tokenSave = new TokenSaveRequestDto(naverToken.getAccess_token(),naverToken.getRefresh_token(),naverUser.getResponse().get("email"));
+                    tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
                     tokenService.save(tokenSave);
                     /* user 저장된게 없을때 저장해주기 */
                     userSaveRequestDto = new UserSaveRequestDto(naverUser.getResponse().get("name"),

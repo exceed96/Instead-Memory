@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.assertj.core.api.AbstractIterableAssert;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,11 +22,11 @@ public class memoContent {
     private String title;
     private String content;
     private String email;
-    private int important;
+    private boolean important;
     private int bookMark;
     private String uuid;
     @Builder
-    public memoContent(String title, String content,String email, int important, int bookMark,String uuid){
+    public memoContent(String title, String content,String email, boolean important, int bookMark,String uuid){
 
         this.title = title;
         this.content = content;
@@ -34,4 +35,5 @@ public class memoContent {
         this.bookMark = bookMark;
         this.uuid = uuid;
     }
+
 }
