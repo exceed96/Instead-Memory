@@ -73,8 +73,8 @@ public class memoApiController {
     {
         String jwtToken = request.getHeader("Authorization");
         boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
-
-//        System.out.println("aaaaaaaaaaaaaaaaaaaaaa" +check);
+        if (!check)
+            return new ResultMsg<MemoResponseDto>(false,"access Token validate expiration");
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모find 이메일 입니다. " +email);
