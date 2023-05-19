@@ -79,7 +79,7 @@ public class OauthService {
 
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
                 GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(googleUser.getName(), jwtToken.getAccessToken(),
-                        oAuthToken.getAccess_token(),oAuthToken.getRefresh_token(), oAuthToken.getToken_type());
+                        jwtToken.getRefreshToken(), oAuthToken.getToken_type());
                 boolean check = getNameCheck(googleUser.getEmail());
                 System.out.println(check);
                 if (check) {
@@ -98,7 +98,7 @@ public class OauthService {
                 Token jwtToken = jwtService.createJwt(user_id, naverUser.getResponse().get("name"));
                 //액세스 토큰과 jwtToken, 이외 정보들이 담긴 자바 객체를 다시 전송한다.
                 GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(naverUser.getResponse().get("name"), jwtToken.getAccessToken(),
-                        naverToken.getAccess_token(), naverToken.getRefresh_token(),naverToken.getToken_type());
+                        jwtToken.getRefreshToken(),naverToken.getToken_type());
                 boolean check = getNameCheck(naverUser.getResponse().get("email"));
                 if (check) {
                     /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */

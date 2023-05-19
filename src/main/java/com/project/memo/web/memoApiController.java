@@ -39,8 +39,8 @@ public class memoApiController {
         String content = memoVo.getContent();
 
         String jwtToken = request.getHeader("Authorization");
-        System.out.println("jwtToken 출력해보기"+ jwtToken);
-        // JWT 토큰 사용하기
+
+//         JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
         String id = UUID.randomUUID().toString(); // idx(int)로 구분하지 않고 랜덤 해시값을 통해 메모 구분
@@ -72,6 +72,9 @@ public class memoApiController {
     public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request)//@LoginUser SessionUser user
     {
         String jwtToken = request.getHeader("Authorization");
+        boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
+
+//        System.out.println("aaaaaaaaaaaaaaaaaaaaaa" +check);
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
         System.out.println("여기는 메모find 이메일 입니다. " +email);

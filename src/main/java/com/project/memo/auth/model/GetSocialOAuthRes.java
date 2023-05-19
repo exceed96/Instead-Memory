@@ -12,9 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetSocialOAuthRes {
     private String username;
-    private String jwtToken;
-    private String refreshToken;
-    private String accessToken;
+    private String jwtAccessToken;
+    private String jwtRefreshToken;
     private String tokenType;
 
 }

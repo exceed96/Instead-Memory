@@ -41,11 +41,12 @@ public class OauthController {
     public RedirectView callback( //ResponseEntity<String> GetSocialOAuthRes
                                        @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
                                        @RequestParam(name = "code") String code) throws JsonProcessingException {
-        log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
+        log.info(">> 소셜 로그인 API 서버로" +
+                "부터 받은 code :: {}", code);
         RedirectView redirectView = new RedirectView();
         GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
 
-        redirectView.setUrl("http://43.200.92.244:8000/memo/?token="+token.getJwtToken());
+        redirectView.setUrl("http://43.200.92.244:8000/memo/?AccessToken="+token.getJwtAccessToken() + "&RefreshToken="+token.getJwtRefreshToken());
         return redirectView;
     }
 }

@@ -20,6 +20,8 @@ public class JwtService {
      */
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
+    public static final String ACCESS_TOKEN = "AccessToken";
+    public static final String REFRESH_TOKEN = "RefreshToken";
     public Token createJwt(String userNum, String username){
         Date now = new Date();
 
@@ -34,8 +36,6 @@ public class JwtService {
 
         String refreshToken = Jwts.builder()
                 .setHeaderParam("type","jwt")
-                .claim("userNum",userNum)
-                .claim("username",username)
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*30))) //발급날짜 계산 유효기간 1년 7일로 하고싶다면 1*(1000*60*60*24*7)
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
@@ -46,12 +46,16 @@ public class JwtService {
     public boolean validateToken(String jwtToken)
     {
         try{
-            Jws<Claims> claims = Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
+            Claims claims = Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwtToken).getBody();
+            return !claims.getExpiration().before(new Date());
         }catch(ExpiredJwtException e){
             System.out.println(e.getMessage());
             return false;
         }
+    }
+    // header 토큰을 가져오는 기능
+    public static String getHeaderToken(HttpServletRequest request, String type) {
+        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) :request.getHeader(REFRESH_TOKEN);
     }
     /*
     Header에서 X-ACCESS-TOKEN 으로 JWT 추출
