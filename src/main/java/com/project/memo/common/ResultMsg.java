@@ -1,6 +1,8 @@
 package com.project.memo.common;
 
 
+import com.project.memo.domain.memoContent.memoContent;
+import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +16,7 @@ public class ResultMsg<T> {
     private Boolean status; // related to code but boolean
     private List<T> data;  // When data is list
     private T item; // When data is an object
-
+    private memoContent memo;
     public ResultMsg(boolean status, String msg){
         this.code = (status) ? "success" : "error";
         this.msg = msg;
@@ -34,6 +36,5 @@ public class ResultMsg<T> {
         this.status = status;
         this.item = item;
     }
-
 
 }

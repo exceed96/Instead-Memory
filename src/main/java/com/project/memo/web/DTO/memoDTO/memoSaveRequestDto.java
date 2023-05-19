@@ -11,15 +11,17 @@ public class memoSaveRequestDto {
     private String title;
     private String content;
     private String email;
-    private int importante;
+    private boolean important;
     private int bookMark;
+    private String uuid;
     @Builder
-    public memoSaveRequestDto(String title,String content,String email,int importante, int bookMark){
+    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid){
         this.title = title;
         this.content = content;
         this.email = email;
-        this.importante = importante;
+        this.important = important;
         this.bookMark = bookMark;
+        this.uuid = uuid;
     }
 
     public memoContent toEntity(){
@@ -27,8 +29,9 @@ public class memoSaveRequestDto {
                 .title(this.title)
                 .content(this.content)
                 .email(this.email)
-                .importante(this.importante)
+                .important(this.important)
                 .bookMark(this.bookMark)
+                .uuid(this.uuid)
                 .build();
     }
 }

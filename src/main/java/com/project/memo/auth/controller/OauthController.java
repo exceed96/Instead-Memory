@@ -11,9 +11,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://43.200.92.244:8000")
 @RequestMapping(value = "/auth")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class OauthController {
     private final OauthService oauthService;
     @RequestMapping(value = "/")
@@ -41,11 +41,12 @@ public class OauthController {
     public RedirectView callback( //ResponseEntity<String> GetSocialOAuthRes
                                        @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
                                        @RequestParam(name = "code") String code) throws JsonProcessingException {
-        log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
+        log.info(">> 소셜 로그인 API 서버로" +
+                "부터 받은 code :: {}", code);
         RedirectView redirectView = new RedirectView();
         GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
 
-        redirectView.setUrl("http://localhost:3000/?token="+token.getJwtToken());
+        redirectView.setUrl("http://43.200.92.244:8000/memo/?AccessToken="+token.getJwtAccessToken() + "&RefreshToken="+token.getJwtRefreshToken());
         return redirectView;
     }
 }

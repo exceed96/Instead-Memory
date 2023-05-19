@@ -22,9 +22,43 @@ public class memoService {
     }
 
     @Transactional
-    public List<MemoResponseDto> findUser(String user){
-        return memoContentRepository.findByUser(user).stream()
+    public List<MemoResponseDto> findUser(String email){
+        return memoContentRepository.findByUser(email).stream()
                 .map(MemoResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<MemoResponseDto> findUserMemo(String uuid){ //user 한명의 uuid가 들어오면 그 메모내용만 다시 리천해주는 거
+        return memoContentRepository.findByUserMemo(uuid).stream()
+                .map(MemoResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<MemoResponseDto> findMemo(String uuid){
+        return memoContentRepository.findMemoLine(uuid).stream()
+                .map(MemoResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleted(String uuid) {
+        memoContentRepository.menuDelete(uuid);
+    }
+    @Transactional
+    public void memoUpdate(String uuid,String title,String content, boolean important) {
+        memoContentRepository.memoUpdated(uuid,important,title,content);
+    }
+
+//    findMemoImportant : uuid에 대한 행을 가지고와서 important만 리턴
+    @Transactional
+    public boolean findMemoImportant(String uuid){
+        return memoContentRepository.findImportant(uuid);
+    }
+//    updateImportant
+    @Transactional
+    public void updateImportant(String uuid,boolean important) {
+        memoContentRepository.updateImportant(uuid,important);
     }
 }
