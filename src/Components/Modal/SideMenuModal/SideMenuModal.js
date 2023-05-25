@@ -10,7 +10,6 @@ const SideMenuModal = (props) => {
     <React.Fragment>
       <section className={styles.modalContent}>
         <section className={styles.sideBarHeader}>
-          <img src="./img/icon.png" alt="" className={styles.profileImage} />
           <strong className={styles.userName}>{props.user}</strong>
         </section>
       </section>

@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import styles from "./SavedMemo.module.css";
+import React, { useEffect, useState } from "react";
+import styles from "./ExpansionMemo.module.css";
 import axios from "axios";
-import ExpansionMemo from "../Modal/ExpansionMemo/ExpansionMemo";
 
-const SavedMemo = (props) => {
-  const [expansionMemo, setExpansionMemo] = useState(false);
-  const [importMemo, setImportMemo] = useState(false);
-
+const ExpansionMemo = (props) => {
+  const [singleMemo, setSingleMemo] = useState({});
   const deleteUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/delete";
-  const putUrl =
-    "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/important";
   const deleteMemo = async (evt) => {
     evt.preventDefault();
     //const sendId = JSON.stringify(idxObj);
@@ -19,44 +14,43 @@ const SavedMemo = (props) => {
     props.setGetData(true);
   };
 
+  const getUrl =
+    "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find/userInfo";
   const header = {
-    "Content-Type": "application/json",
     Authorization: `Bearer ${localStorage.getItem("userToken")}`,
   };
 
-  const sendData = { uuid: props.uuid };
-
-  const changeImportMemo = async () => {
-    setImportMemo((prevState) => !prevState);
-    const finalData = JSON.stringify(sendData);
-    console.log(finalData);
-    await axios({
-      method: "put",
-      url: putUrl,
-      headers: header,
-      data: finalData,
-    });
+  const sendData = {
+    uuid: props.uuid,
   };
 
-  const clickMemo = () => {
-    setExpansionMemo((prevState) => {
-      return !prevState;
-    });
-  };
-
+  useEffect(() => {
+    const getMemo = async (evt) => {
+      const finalSendData = JSON.stringify(sendData);
+      console.log(finalSendData);
+      const data = await axios({
+        method: "get",
+        url: getUrl,
+        params: sendData,
+        headers: header,
+      });
+      setSingleMemo(data.data.data[0]);
+    };
+    getMemo();
+  }, [sendData]);
   return (
     <>
       <li className={styles.memo}>
         <form className={styles.savedMemo} onSubmit={deleteMemo}>
           <div className={styles.savedMemoTop}>
-            <div onClick={clickMemo} className={styles.savedMemoLeft}>
+            <div className={styles.savedMemoLeft}>
               <input
                 type="text"
                 id="memo-title"
                 className={styles["memo-title"]}
                 placeholder="제목"
                 size="30"
-                value={props.title}
+                value={singleMemo.title}
               />
               <hr />
               <textarea
@@ -64,22 +58,12 @@ const SavedMemo = (props) => {
                 id="memo-text"
                 className={styles["memo-text"]}
                 cols="30"
-                rows="3"
                 placeholder="본문"
-                value={props.content}
+                value={singleMemo.content}
               ></textarea>
             </div>
             <div className={styles.savedMemoRight}>
-              {!props.important && (
-                <i
-                  className="fa-regular fa-star"
-                  i
-                  onClick={changeImportMemo}
-                ></i>
-              )}
-              {props.important && (
-                <i class="fa-solid fa-star" onClick={changeImportMemo}></i>
-              )}
+              <i className="fa-regular fa-star"></i>
               <i className="fa-regular fa-folder"></i>
             </div>
           </div>
@@ -92,11 +76,12 @@ const SavedMemo = (props) => {
           </div>
         </form>
       </li>
-      {expansionMemo && (
-        <ExpansionMemo clickMemo={clickMemo} uuid={props.uuid} />
-      )}
+      <section
+        onClick={props.clickMemo}
+        className={styles.modalOverlay}
+      ></section>
     </>
   );
 };
 
-export default SavedMemo;
+export default ExpansionMemo;

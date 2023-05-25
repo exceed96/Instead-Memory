@@ -1,20 +1,22 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import styles from "./WriteMemo.module.css";
 import axios from "axios";
-import SavedMemo from "../SavedMemo/SavedMemo";
 
 const WriteMemo = (props) => {
-  // const sendtitle = useRef("");
-  // const sendmainText = useRef("");
   const [inputTitle, setInputTitle] = useState("");
-  const [mainText, setMainText] = useState("");
+  const [inputMainText, setInputMainText] = useState("");
+  const [importMemo, setImportMemo] = useState(false);
 
   const changeTitleHandler = (evt) => {
     setInputTitle(evt.target.value);
   };
 
   const changeMainTextHandler = (evt) => {
-    setMainText(evt.target.value);
+    setInputMainText(evt.target.value);
+  };
+
+  const changeImportMemo = () => {
+    setImportMemo((prevState) => !prevState);
   };
 
   const postUrl =
@@ -22,10 +24,7 @@ const WriteMemo = (props) => {
 
   const getUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
-  const sendData = {
-    title: inputTitle,
-    content: mainText,
-  };
+
   const header = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${localStorage.getItem("userToken")}`,
@@ -33,7 +32,10 @@ const WriteMemo = (props) => {
 
   const memoSubmitHandler = async (evt) => {
     evt.preventDefault();
-    const finalData = JSON.stringify({ title: inputTitle, content: mainText });
+    const finalData = JSON.stringify({
+      title: inputTitle,
+      content: inputMainText,
+    });
     const response = await axios({
       method: "post",
       url: postUrl,
@@ -41,13 +43,8 @@ const WriteMemo = (props) => {
       data: finalData,
     });
     props.setGetData(true);
-    //const data = await axios({
-    //  method: "get",
-    // url: getUrl,
-    // headers : header,
-    //})
-    //const sendData = data.data.data.map((el) => (<SavedMemo title={el.title} content={el.content} uuid={el.uuid}/>));
-    //props.setReceiveData(sendData);
+    setInputTitle("");
+    setInputMainText("");
   };
 
   return (
@@ -64,7 +61,7 @@ const WriteMemo = (props) => {
             name="title"
             size="30"
             onChange={changeTitleHandler}
-            // ref={sendtitle}
+            value={inputTitle}
           />
           <hr />
           <textarea
@@ -75,13 +72,18 @@ const WriteMemo = (props) => {
             rows="3"
             placeholder="본문"
             onChange={changeMainTextHandler}
-            // ref={sendmainText}
+            value={inputMainText}
           ></textarea>
         </div>
         {/* <!-- 메모 우측 영역 --> */}
         <div className={styles["main-memoRight"]}>
           {/* <!-- 즐겨찾기 div박스 삭제(*) --> */}
-          <i className="fa-regular fa-star"></i>
+          {!importMemo && (
+            <i className="fa-regular fa-star" i onClick={changeImportMemo}></i>
+          )}
+          {importMemo && (
+            <i class="fa-solid fa-star" onClick={changeImportMemo}></i>
+          )}
           {/* <!-- 폴더 div박스 삭제(*)--> */}
           <i className="fa-regular fa-folder"></i>
         </div>
@@ -96,7 +98,6 @@ const WriteMemo = (props) => {
         {/* <!-- 메모 하단 오른쪽 --> */}
         <div className={styles["main-memoBottomRight"]}>
           <button className={styles["main-memoSave"]}>저장</button>
-          {/* <!-- 삭제 기능(사이드에 넣을지 하단에 넣을지 고민) --> */}
         </div>
       </div>
     </form>

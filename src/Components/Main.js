@@ -22,12 +22,12 @@ const Main = () => {
         url: getUrl,
         headers: header,
       });
-      console.log(data);
       const sendData = data.data.data.map((el) => (
         <SavedMemo
           title={el.title}
           content={el.content}
           uuid={el.uuid}
+          important={el.important}
           setGetData={setGetData}
         />
       ));

@@ -6,8 +6,8 @@ const app = express();
 
 const port = 8000;
 
-app.get("/ping", (req, res) => {
-  res.send("pong");
+app.get("/", (req, res) => {
+  res.send("");
 });
 
 app.use(express.static(path.join(__dirname, "build")));

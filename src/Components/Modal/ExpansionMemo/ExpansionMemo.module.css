@@ -10,8 +10,11 @@
 }
 
 .memo {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: var(--main-memo-width);
-  height: var(--main-memo-height);
   margin: 36px;
   border-radius: var(--main-box-borderRadius);
   border-top: 1.5px solid black;
@@ -19,6 +22,8 @@
   padding: 10px;
   transition: var(--main-box-transition);
   cursor: pointer;
+  z-index: 2;
+  background-color: white;
   /* box-shadow: var(--main-memo-boxShadow); */
 }
 
@@ -87,8 +92,18 @@
   justify-content: flex-start;
   transition: opacity 0.6s ease;
   opacity: 1;
+  cursor: pointer;
 }
 
 .memo .savedMemoTop .savedMemoRight i {
   margin-top: 10px;
+}
+
+.modalOverlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1;
 }

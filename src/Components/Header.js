@@ -9,6 +9,7 @@ const Header = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    console.log(width);
     const windowWidth = () => {
       setWidth(window.innerHeight);
       if (width > 769) {

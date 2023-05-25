@@ -9,6 +9,8 @@
 
 .importantMemoModalContent {
   position: fixed;
+  display: flex;
+  flex-direction: row;
   bottom: 0;
   width: 100vw;
   height: 50vh;
