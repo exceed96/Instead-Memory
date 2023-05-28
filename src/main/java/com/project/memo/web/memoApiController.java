@@ -50,7 +50,7 @@ public class memoApiController {
         memoService.save(requestDto);
         return true;
     }
-    @PutMapping(value = "/v1/memo/update") //memo 전체 업데이ㅡ
+    @PutMapping(value = "/v1/memo/update") //memo 전체 업데이트
     public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request){
         String jwtToken = request.getHeader("Authorization");
         boolean important = memoVo.isImportant();
