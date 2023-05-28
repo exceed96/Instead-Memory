@@ -14,4 +14,8 @@ public class tokenService {
         tokenRepository.save(requestDto.toEntity()).getId(); // 저장
     }
 
+    @Transactional
+    public String findRefreshtoken(String email) {
+        return tokenRepository.findRefreshToken(email);
+    }
 }
