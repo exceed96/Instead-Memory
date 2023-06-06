@@ -1,19 +1,21 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import styles from "./Main.module.css";
 import SavedMemo from "./SavedMemo/SavedMemo";
 import WriteMemo from "./WriteMemo/WriteMemo";
 import ImportMemoToggle from "./ImportMemo/ImportMemoToggle";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { mainActions } from "../store/mainState";
 
 const Main = () => {
-  const [receiveData, setReceiveData] = useState([]);
-  const [getData, setGetData] = useState(true);
-
   const getUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
   const header = {
     Authorization: `Bearer ${localStorage.getItem("userToken")}`,
   };
+  const getData = useSelector((state) => state.mainState.getData);
+  const receiveData = useSelector((state) => state.mainState.receiveData);
+  const dispatch = useDispatch();
 
   const axiosDataHandler = useCallback(async () => {
     if (getData) {
@@ -28,11 +30,10 @@ const Main = () => {
           content={el.content}
           uuid={el.uuid}
           important={el.important}
-          setGetData={setGetData}
         />
       ));
-      setReceiveData(sendData);
-      setGetData(false);
+      dispatch(mainActions.receiveData(sendData));
+      dispatch(mainActions.setGetData());
     }
   }, [getData]);
 
@@ -42,7 +43,7 @@ const Main = () => {
 
   return (
     <main>
-      <WriteMemo setGetData={setGetData} />
+      <WriteMemo />
       {/* <!-- 즐겨찾기 토글 --> */}
       <section>
         <ImportMemoToggle />

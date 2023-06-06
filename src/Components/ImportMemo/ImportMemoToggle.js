@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ImportMemoToggle.module.css";
-import ImportantModalContent from "../Modal/ImportantModalContent.js/ImportantModalContent";
+import ImportantModalContent from "../Modal/ImportantModalContent/ImportantModalContent";
+import { useSelector, useDispatch } from "react-redux";
+import { importMemoActions } from "../../store/importMemoState";
 
 const ImportMemoToggle = (props) => {
-  const [modal, setModal] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const modal = useSelector((state) => state.importMemoState.modal);
+  const isOpen = useSelector((state) => state.importMemoState.isOpen);
+  const dispatch = useDispatch();
 
   const modalEventHandler = () => {
-    setModal((prevState) => !prevState);
-    setIsOpen((isOpen) => !isOpen);
+    dispatch(importMemoActions.onOffModal());
   };
 
   if (isOpen) {

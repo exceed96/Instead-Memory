@@ -5,6 +5,7 @@
 .main-savedMemo .savedMemo-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, auto));
-  gap: 20px 40px;
+  gap: 20px 80px;
   justify-items: center;
+  padding: 0 40px;
 }

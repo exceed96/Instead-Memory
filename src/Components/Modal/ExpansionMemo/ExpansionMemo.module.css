@@ -49,6 +49,8 @@
   font-size: var(--main-memo-textFontsize);
   padding: var(--main-memo-titleTextPadding);
   resize: none;
+  height: auto;
+  min-height: var(--main-memo-height);
   border: none;
 }
 

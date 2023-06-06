@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import styles from "./SavedMemo.module.css";
 import axios from "axios";
 import ExpansionMemo from "../Modal/ExpansionMemo/ExpansionMemo";
+import { useDispatch } from "react-redux";
+import { mainActions } from "../../store/mainState";
+import { getImportMemo } from "../../store/importMemoState";
 
 const SavedMemo = (props) => {
-  const [expansionMemo, setExpansionMemo] = useState(false);
-  const [importMemo, setImportMemo] = useState(false);
+  const dispatch = useDispatch();
 
+  const [expansionMemo, setExpansionMemo] = useState(false);
   const deleteUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/delete";
   const putUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/important";
   const deleteMemo = async (evt) => {
     evt.preventDefault();
-    //const sendId = JSON.stringify(idxObj);
-    //console.log(sendId);
-    await axios.delete(`${deleteUrl}/${props.uuid}`);
-    props.setGetData(true);
+    const isDelete = window.confirm("Delete???");
+    if (isDelete) {
+      await axios.delete(`${deleteUrl}/${props.uuid}`);
+      dispatch(mainActions.setGetData());
+      dispatch(getImportMemo());
+    }
   };
 
   const header = {
@@ -27,21 +32,19 @@ const SavedMemo = (props) => {
   const sendData = { uuid: props.uuid };
 
   const changeImportMemo = async () => {
-    setImportMemo((prevState) => !prevState);
     const finalData = JSON.stringify(sendData);
-    console.log(finalData);
     await axios({
       method: "put",
       url: putUrl,
       headers: header,
       data: finalData,
     });
+    dispatch(getImportMemo());
+    dispatch(mainActions.setGetData());
   };
 
   const clickMemo = () => {
-    setExpansionMemo((prevState) => {
-      return !prevState;
-    });
+    setExpansionMemo((prevState) => !prevState);
   };
 
   return (

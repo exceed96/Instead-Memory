@@ -1,29 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./WriteMemo.module.css";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { mainActions } from "../../store/mainState";
+import { writeMemoActions } from "../../store/writeMemoState";
 
 const WriteMemo = (props) => {
-  const [inputTitle, setInputTitle] = useState("");
-  const [inputMainText, setInputMainText] = useState("");
-  const [importMemo, setImportMemo] = useState(false);
+  const dispatch = useDispatch();
+
+  const inputTitleText = useSelector(
+    (state) => state.writeMemoState.inputTitleText
+  );
+  const inputMainText = useSelector(
+    (state) => state.writeMemoState.inputMainText
+  );
+  const importMemo = useSelector((state) => state.writeMemoState.importMemo);
 
   const changeTitleHandler = (evt) => {
-    setInputTitle(evt.target.value);
+    dispatch(writeMemoActions.changeTitleText(evt.target.value));
   };
 
   const changeMainTextHandler = (evt) => {
-    setInputMainText(evt.target.value);
+    dispatch(writeMemoActions.changeMainText(evt.target.value));
   };
 
   const changeImportMemo = () => {
-    setImportMemo((prevState) => !prevState);
+    dispatch(writeMemoActions.changeImportMemo());
   };
 
   const postUrl =
     "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo";
-
-  const getUrl =
-    "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
 
   const header = {
     "Content-Type": "application/json",
@@ -33,8 +39,9 @@ const WriteMemo = (props) => {
   const memoSubmitHandler = async (evt) => {
     evt.preventDefault();
     const finalData = JSON.stringify({
-      title: inputTitle,
+      title: inputTitleText,
       content: inputMainText,
+      important: importMemo,
     });
     const response = await axios({
       method: "post",
@@ -42,9 +49,12 @@ const WriteMemo = (props) => {
       headers: header,
       data: finalData,
     });
-    props.setGetData(true);
-    setInputTitle("");
-    setInputMainText("");
+    if (importMemo) {
+      dispatch(writeMemoActions.changeImportMemo());
+    }
+    dispatch(writeMemoActions.changeTitleText(""));
+    dispatch(writeMemoActions.changeMainText(""));
+    dispatch(mainActions.setGetData());
   };
 
   return (
@@ -61,7 +71,8 @@ const WriteMemo = (props) => {
             name="title"
             size="30"
             onChange={changeTitleHandler}
-            value={inputTitle}
+            value={inputTitleText}
+            required
           />
           <hr />
           <textarea
@@ -73,6 +84,7 @@ const WriteMemo = (props) => {
             placeholder="본문"
             onChange={changeMainTextHandler}
             value={inputMainText}
+            required
           ></textarea>
         </div>
         {/* <!-- 메모 우측 영역 --> */}

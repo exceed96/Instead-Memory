@@ -1,9 +1,12 @@
 import React from "react";
 import styles from "./SideMenuModal.module.css";
-
+import { useDispatch } from "react-redux";
+import { headerActions } from "../../../store/headerState";
 const SideMenuModal = (props) => {
+  const dispatch = useDispatch();
+
   const modalEventHandler = () => {
-    props.setModal(false);
+    dispatch(headerActions.closeModal());
   };
 
   return (

@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./Header.module.css";
 import icon from "../assets/icon.png";
 import SideMenuModal from "./Modal/SideMenuModal/SideMenuModal";
+import { useSelector, useDispatch } from "react-redux";
+import { headerActions } from "../store/headerState";
 
 const Header = (props) => {
-  const [modal, setModal] = useState(false);
-  const [width, setWidth] = useState(window.innerWidth);
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const modal = useSelector((state) => state.headerState.modal);
+  const isOpen = useSelector((state) => state.headerState.isOpen);
+  const width = useSelector((state) => state.headerState.width);
 
   useEffect(() => {
-    console.log(width);
     const windowWidth = () => {
-      setWidth(window.innerHeight);
+      dispatch(headerActions.modalWidth());
       if (width > 769) {
-        setModal(false);
+        dispatch(headerActions.closeModal());
       }
     };
     window.addEventListener("resize", windowWidth);
@@ -21,8 +23,7 @@ const Header = (props) => {
   }, [width]);
 
   const modalEventHandler = () => {
-    setModal((modal) => !modal);
-    setIsOpen((isOpen) => !isOpen);
+    dispatch(headerActions.changeModal());
   };
 
   if (isOpen) {
@@ -33,9 +34,7 @@ const Header = (props) => {
 
   return (
     <header className={styles.header}>
-      {modal && (
-        <SideMenuModal setModal={modalEventHandler} user={props.user} />
-      )}
+      {modal && <SideMenuModal user={props.user} />}
       <div className={styles.headerLeft}>
         <nav className={styles["header-nav"]}>
           <div className={styles["headerLeft-menu"]}>

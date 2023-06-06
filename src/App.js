@@ -1,10 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Reset } from "styled-reset";
-import Header from "./Components/Header";
-import Main from "./Components/Main";
-import Footer from "./Components/Footer";
-import jwt_decode from "jwt-decode";
-import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MemoHomePage from "./pages/MemoHome";
 import LoginPage from "./pages/Login";
