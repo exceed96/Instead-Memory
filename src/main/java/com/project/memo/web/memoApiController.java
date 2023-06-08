@@ -1,10 +1,9 @@
 package com.project.memo.web;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.memo.auth.jwt.JwtService;
+import com.project.memo.auth.token.makeCookie;
+import com.project.memo.auth.token.tokenService;
 import com.project.memo.common.ResultMsg;
 import com.project.memo.service.memoService;
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
@@ -17,22 +16,30 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.UUID;
 
+import static com.project.memo.util.Define.MEMO_VERSION_PATH;
+
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://43.200.92.244:8000")
+@RequestMapping(value = MEMO_VERSION_PATH)
+@CrossOrigin(origins = "https://insteadmemo.kr")
 public class memoApiController {
     private final memoService memoService;
     private final JwtService jwtService;
+
+    private final makeCookie makeCookie;
+    private final tokenService tokenService;
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
 
 //    @PostMapping("/v1/memo")
-    @RequestMapping(value = "/v1/memo") //처음 저장하는 api
+    @RequestMapping(value = "/memo") //처음 저장하는 api
     public boolean memoSave(@RequestBody memoVo memoVo,HttpServletRequest request){//, @LoginUser SessionUser user
         memoSaveRequestDto requestDto;
         String title = memoVo.getTitle();
@@ -50,7 +57,7 @@ public class memoApiController {
         memoService.save(requestDto);
         return true;
     }
-    @PutMapping(value = "/v1/memo/update") //memo 전체 업데이트
+    @PutMapping(value = "/memo/update") //memo 전체 업데이트
     public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request){
         String jwtToken = request.getHeader("Authorization");
         boolean important = memoVo.isImportant();
@@ -64,13 +71,15 @@ public class memoApiController {
         memoService.memoUpdate(uuid,title, content, important);
         return true;
      }
-    @GetMapping(value = "/v1/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
+    @GetMapping(value = "/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
     public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,HttpServletRequest request){
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUserMemo(uuid));
     }
-    @GetMapping("/v1/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
-    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request)//@LoginUser SessionUser user
+    @GetMapping("/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
+    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request, HttpServletResponse response)//@LoginUser SessionUser user
     {
+        //,@CookieValue(value="ID",required = false) String key
+//        String accessToken = tokenService.findAccessToken(res, key);
         String jwtToken = request.getHeader("Authorization");
         boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
         if (!check)
@@ -81,7 +90,7 @@ public class memoApiController {
         //!! email값에 아직 아무 메모내용이없을때 에러뜨는거 수정해야함
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
     }
-    @PutMapping(value = "/v1/memo/important") //important만 업데이트 해주는 api
+    @PutMapping(value = "/memo/important") //important만 업데이트 해주는 api
     public String memoImportant(@RequestBody uuidVO uuid, HttpServletRequest request){
         String id = uuid.getUuid();
         boolean important = memoService.findMemoImportant(id);
@@ -92,7 +101,7 @@ public class memoApiController {
         memoService.updateImportant(id, important);
         return "200";
     }
-    @DeleteMapping("/v1/memo/delete/{uuid}")
+    @DeleteMapping("/memo/delete/{uuid}")
     public void memoDelete(@PathVariable("uuid") String uuid){
         System.out.println(uuid);
         memoService.deleted(uuid);

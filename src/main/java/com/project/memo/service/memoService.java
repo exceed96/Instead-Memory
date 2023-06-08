@@ -61,4 +61,9 @@ public class memoService {
     public void updateImportant(String uuid,boolean important) {
         memoContentRepository.updateImportant(uuid,important);
     }
+
+    @Transactional
+    public void updateDirName(String uuid,String dirName) {
+        memoContentRepository.updateDirName(uuid,dirName);
+    }
 }

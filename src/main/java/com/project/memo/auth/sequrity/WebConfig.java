@@ -10,11 +10,14 @@ public class WebConfig implements WebMvcConfigurer {
     {
         registry.addMapping("/**") //CORS를 적용할 URL패턴을 정의할 수 있다. -> 와일드 카드를 사용할 수 있음
         //또한 Ant-style도 지원하며 "/somePath/**"이렇게 적용할 수도있다.
-                .allowedOrigins("http://43.200.92.244:8000") // 허용할 도메인을 설정합니다.
+                .allowedOrigins("https://insteadmemo.kr") // 허용할 도메인을 설정합니다.
                 .allowedMethods("GET", "POST", "PUT", "DELETE","PATH", "OPTIONS") // 허용할 HTTP 메서드를 설정합니다.
                 .allowedHeaders("headers","jwt-token", "token value") // 허용할 요청 헤더를 설정합니다.
                 .allowedHeaders("Content-Type", "X-AUTH-TOKEN","Authorization","Access-Control-Allow-Origin",
-                        "Access-Control-Allow-Credentials")
+                        "Access-Control-Allow-Credentials","Access-Control-Expose-Headers")
+
+                .allowCredentials(true)
+                .exposedHeaders("Authorization")
                 .maxAge(3000);
     }
 

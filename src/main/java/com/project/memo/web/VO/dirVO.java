@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class uuidVO {
-    String email;
+public class dirVO {
     String uuid;
-//    int bookMark;
+    String dirName;
 }
