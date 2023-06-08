@@ -5,10 +5,12 @@ import com.project.memo.auth.service.OauthService;
 import com.project.memo.auth.token.makeCookie;
 import com.project.memo.auth.token.tokenService;
 import com.project.memo.auth.type.SocialLoginType;
+import com.project.memo.web.VO.uuidVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -16,10 +18,12 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.project.memo.util.Define.INSTEADMEMO_LOGIN_PATH;
+
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "http://43.200.92.244:8000")
-@RequestMapping(value = "/auth")
+@RequestMapping(value = INSTEADMEMO_LOGIN_PATH)
 @Slf4j
 public class OauthController {
     private final OauthService oauthService;
@@ -48,25 +52,23 @@ public class OauthController {
      */
     @GetMapping(value = "/{socialLoginType}/callback")
     public RedirectView callback( //ResponseEntity<String> GetSocialOAuthRes
+                                  HttpServletResponse response,
                                        @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
                                        @RequestParam(name = "code") String code) throws JsonProcessingException {
         log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
         RedirectView redirectView = new RedirectView();
         GetSocialOAuthRes token = oauthService.requestAccessToken(socialLoginType, code);
 
-        redirectView.setUrl("http://43.200.92.244:8000/memo/?AccessToken="+token.getJwtAccessToken());
-
+        redirectView.setUrl("https://insteadmemo.kr/memo/?AccessToken="+token.getJwtAccessToken());
         return redirectView;
     }
-    @GetMapping(value= "/login")
-    public ResponseEntity<?> login(@RequestBody String email,HttpServletResponse response)
+    @PostMapping(value= "/login")
+    public ResponseEntity<?> login(@RequestBody uuidVO uuid, HttpServletResponse response)
     {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Set-Cookie","platform=mobile; Max-Age=604800; Path=/; Secure; HttpOnly");
-//        ResponseEntity.status(HttpStatus.OK).headers(headers).build();
-        String token = tokenService.findRefreshtoken(email);
-//        Cookie cookie =makeCookie.createCookie("refresh", token);
-        response.addHeader("set-Cookie","refreshToken="+token);
+        String token = tokenService.findRefreshtoken(uuid.getEmail());
+        System.out.println("token " + token);
+        ResponseCookie cookie =makeCookie.createCookie("refresh", token);
+        response.addHeader("Set-Cookie", cookie.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

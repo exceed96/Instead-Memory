@@ -82,8 +82,9 @@ public class OauthService {
                         jwtToken.getRefreshToken(), oAuthToken.getToken_type());
                 boolean check = getNameCheck(googleUser.getEmail());
                 System.out.println(check);
-                if (check) {
+                if (check) { //user가 저장되어있지않을때 저장하게 해줌
                     /* 액세슽 토큰 리프레시 토큰 이메일 저장하기 */
+                    //tokenSave는 user가 저장되어있지않을때만 들어옴 => 로그아웃하면 user에 대한걸 삭제해서 괜찮나?
                     tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
                     tokenService.save(tokenSave);
                     /* user 저장된게 없을때 저장해주기 */
