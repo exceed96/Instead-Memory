@@ -13,10 +13,10 @@ public class tokenService {
     public void save(TokenSaveRequestDto requestDto){
         tokenRepository.save(requestDto.toEntity()).getId(); // 저장
     }
-
-    @Transactional
-    public String findRefreshtoken(String email) {
-        System.out.println("eeee:" +tokenRepository.findRefreshToken(email));
-        return tokenRepository.findRefreshToken(email);
-    }
+    /*안써서 주석처리 나중에 지울수 있음*/
+//    @Transactional
+//    public String findRefreshtoken(String email) {
+//        System.out.println("eeee:" +tokenRepository.findRefreshToken(email));
+//        return tokenRepository.findRefreshToken(email);
+//    }
 }
