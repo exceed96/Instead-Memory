@@ -1,6 +1,25 @@
 package com.project.memo.domain.directory;
 
+import com.project.memo.domain.memoContent.memoContent;
+import com.project.memo.web.DTO.dirDTO.DirResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 public interface directoryRepository extends JpaRepository<directory, Integer> {
+
+    @Query(value = "SELECT * from directory where email=:email", nativeQuery = true)
+    List<directory> getDir(@Param("email") String email);
+
+    @Query(value = "SELECT count(dirName) from directory where dirName=:dirName", nativeQuery = true)
+    int sameName(@Param("dirName") String dirName);
+
+    @Transactional
+    @Modifying
+    @Query(value ="DELETE from directory where dirName=:dirName", nativeQuery = true)
+    int dirDelete(@Param("dirName") String dirName);
 }

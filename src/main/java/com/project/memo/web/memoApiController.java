@@ -6,6 +6,7 @@ import com.project.memo.auth.token.makeCookie;
 import com.project.memo.auth.token.tokenService;
 import com.project.memo.common.ResultMsg;
 import com.project.memo.service.memoService;
+import com.project.memo.service.userService;
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
 import com.project.memo.web.DTO.memoDTO.memoSaveRequestDto;
 import com.project.memo.web.VO.memoVo;
@@ -34,18 +35,22 @@ public class memoApiController {
     private final JwtService jwtService;
 
     private final makeCookie makeCookie;
+    private final userService userService;
     private final tokenService tokenService;
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
 
 //    @PostMapping("/v1/memo")
     @RequestMapping(value = "/memo") //처음 저장하는 api
-    public boolean memoSave(@RequestBody memoVo memoVo,HttpServletRequest request){//, @LoginUser SessionUser user
+    public String memoSave(@RequestBody memoVo memoVo,HttpServletRequest request,HttpServletResponse response){//, @LoginUser SessionUser user
         memoSaveRequestDto requestDto;
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
 
         String jwtToken = request.getHeader("Authorization");
+        boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
+        if (!check)
+            return "605";
 
 //         JWT 토큰 사용하기
         String email = jwtService.getUserNum(jwtToken);
@@ -55,10 +60,10 @@ public class memoApiController {
 //        int bookMark = memoVo.getBookMark();
         requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
         memoService.save(requestDto);
-        return true;
+        return "200";
     }
     @PutMapping(value = "/memo/update") //memo 전체 업데이트
-    public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request){
+    public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request,HttpServletResponse response){
         String jwtToken = request.getHeader("Authorization");
         boolean important = memoVo.isImportant();
         String title = memoVo.getTitle();
@@ -76,18 +81,13 @@ public class memoApiController {
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUserMemo(uuid));
     }
     @GetMapping("/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
-    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request, HttpServletResponse response)//@LoginUser SessionUser user
+    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request,HttpServletResponse response)//@LoginUser SessionUser user
     {
         //,@CookieValue(value="ID",required = false) String key
 //        String accessToken = tokenService.findAccessToken(res, key);
-        String jwtToken = request.getHeader("Authorization");
-        boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
-        if (!check)
-            return new ResultMsg<MemoResponseDto>(false,"access Token validate expiration");
+        String token = tokenService.checkAccessToken(request,response);
         // JWT 토큰 사용하기
-        String email = jwtService.getUserNum(jwtToken);
-        System.out.println("여기는 메모find 이메일 입니다. " +email);
-        //!! email값에 아직 아무 메모내용이없을때 에러뜨는거 수정해야함
+        String email = jwtService.getUserNum(token);
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
     }
     @PutMapping(value = "/memo/important") //important만 업데이트 해주는 api

@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<users,Integer> {
     //findByEmail - 소셜 로그인으로 반환되는 값중 email을 통해 생성된 사용자인지 처음가입하는지 판단.
     @Query(value = "SELECT email from users where email=:email", nativeQuery = true)
     String findAllIndex(@Param("email") String email);
+
+    @Query(value = "SELECT name from users where email=:email", nativeQuery = true)
+    String findUser(@Param("email") String email);
 }

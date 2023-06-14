@@ -10,14 +10,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DirSaveRequestDto {
     private String dirName;
+    private String email;
     @Builder
-    public DirSaveRequestDto(String dirName){
+    public DirSaveRequestDto(String dirName,String email){
         this.dirName = dirName;
+        this.email = email;
     }
 
     public directory toEntity(){
         return directory.builder()
                 .dirName(this.dirName)
+                .email(this.email)
                 .build();
     }
 }
