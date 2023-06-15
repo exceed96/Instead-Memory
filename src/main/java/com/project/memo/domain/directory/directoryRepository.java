@@ -15,11 +15,11 @@ public interface directoryRepository extends JpaRepository<directory, Integer> {
     @Query(value = "SELECT * from directory where email=:email", nativeQuery = true)
     List<directory> getDir(@Param("email") String email);
 
-    @Query(value = "SELECT count(dirName) from directory where dirName=:dirName", nativeQuery = true)
-    int sameName(@Param("dirName") String dirName);
+    @Query(value = "SELECT count(dirName) from directory where dirName=:dirName and email=:email", nativeQuery = true)
+    int sameName(@Param("dirName") String dirName,@Param("email") String email);
 
     @Transactional
     @Modifying
-    @Query(value ="DELETE from directory where dirName=:dirName", nativeQuery = true)
-    int dirDelete(@Param("dirName") String dirName);
+    @Query(value ="DELETE from directory where uuid=:uuid", nativeQuery = true)
+    int dirDelete(@Param("uuid") String uuid);
 }

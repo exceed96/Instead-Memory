@@ -1,12 +1,14 @@
 package com.project.memo.service;
 
 import com.project.memo.domain.directory.directoryRepository;
+import com.project.memo.exception.DirSameNameException;
 import com.project.memo.web.DTO.dirDTO.DirResponseDto;
 import com.project.memo.web.DTO.dirDTO.DirSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,16 @@ public class dirService {
                 .collect(Collectors.toList());
     }
     @Transactional
-    public int sameName(String dirName){
-        return directoryRepository.sameName(dirName);
+    public void sameName(String dirName,String email, HttpServletResponse response){
+       int num = directoryRepository.sameName(dirName,email);
+        if (num != 0) {
+            response.setStatus(606);
+            throw new DirSameNameException();
+        }
     }
 
     @Transactional
-    public void deleted(String dirName) {
-        directoryRepository.dirDelete(dirName);
+    public void deleted(String uuid) {
+        directoryRepository.dirDelete(uuid);
     }
 }

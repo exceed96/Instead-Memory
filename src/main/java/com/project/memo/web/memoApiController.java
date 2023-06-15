@@ -43,33 +43,29 @@ public class memoApiController {
 //    @PostMapping("/v1/memo")
     @RequestMapping(value = "/memo") //처음 저장하는 api
     public String memoSave(@RequestBody memoVo memoVo,HttpServletRequest request,HttpServletResponse response){//, @LoginUser SessionUser user
-        memoSaveRequestDto requestDto;
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
 
-        String jwtToken = request.getHeader("Authorization");
-        boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
-        if (!check)
-            return "605";
+        String token = tokenService.checkAccessToken(request,response);
 
 //         JWT 토큰 사용하기
-        String email = jwtService.getUserNum(jwtToken);
+        String email = jwtService.getUserNum(token);
         System.out.println("여기는 메모저장 이메일 입니다. " +email);
         String id = UUID.randomUUID().toString(); // idx(int)로 구분하지 않고 랜덤 해시값을 통해 메모 구분
         boolean important = memoVo.isImportant();
 //        int bookMark = memoVo.getBookMark();
-        requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
+        memoSaveRequestDto requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
         memoService.save(requestDto);
         return "200";
     }
     @PutMapping(value = "/memo/update") //memo 전체 업데이트
     public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request,HttpServletResponse response){
-        String jwtToken = request.getHeader("Authorization");
+        tokenService.checkAccessToken(request,response);
+
         boolean important = memoVo.isImportant();
         String title = memoVo.getTitle();
         String content = memoVo.getContent();
         String uuid = memoVo.getUuid();
-
         //uuid와 같은 메모에 대한 전체를 찾아오기
         List<MemoResponseDto> list = memoService.findMemo(uuid);
         //important변경값 업데이트 저장하기
@@ -77,21 +73,22 @@ public class memoApiController {
         return true;
      }
     @GetMapping(value = "/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
-    public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,HttpServletRequest request){
+    public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,HttpServletRequest request,HttpServletResponse response){
+        tokenService.checkAccessToken(request,response);
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUserMemo(uuid));
     }
     @GetMapping("/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
     public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request,HttpServletResponse response)//@LoginUser SessionUser user
     {
-        //,@CookieValue(value="ID",required = false) String key
-//        String accessToken = tokenService.findAccessToken(res, key);
         String token = tokenService.checkAccessToken(request,response);
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(token);
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
     }
     @PutMapping(value = "/memo/important") //important만 업데이트 해주는 api
-    public String memoImportant(@RequestBody uuidVO uuid, HttpServletRequest request){
+    public String memoImportant(@RequestBody uuidVO uuid, HttpServletRequest request,HttpServletResponse response){
+        tokenService.checkAccessToken(request,response);
+
         String id = uuid.getUuid();
         boolean important = memoService.findMemoImportant(id);
         System.out.println("v1/memo/important : " + important);
@@ -101,9 +98,9 @@ public class memoApiController {
         memoService.updateImportant(id, important);
         return "200";
     }
-    @DeleteMapping("/memo/delete/{uuid}")
-    public void memoDelete(@PathVariable("uuid") String uuid){
-        System.out.println(uuid);
-        memoService.deleted(uuid);
+    @DeleteMapping("/memo/delete")
+    public void memoDelete(@RequestBody memoVo memoVo, HttpServletRequest request,HttpServletResponse response){
+        tokenService.checkAccessToken(request,response);
+        memoService.deleted(memoVo.getUuid());
     }
 }

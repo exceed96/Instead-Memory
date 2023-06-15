@@ -30,7 +30,7 @@ public class JwtService {
                 .claim("userNum",userNum)
                 .claim("username",username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+ 1 * 1000*60*30)) //발급날짜 계산 유효기간 30분
+                .setExpiration(new Date(now.getTime()+ 1 * 1000*60)) //발급날짜 계산 유효기간 30분
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
                 .compact(); // 생성
 
