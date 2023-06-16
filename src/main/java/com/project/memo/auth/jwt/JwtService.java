@@ -37,7 +37,7 @@ public class JwtService {
         String refreshToken = Jwts.builder()
                 .setHeaderParam("type","jwt")
                 .setIssuedAt(now)//1*1000*60*60*24
-                .setExpiration(new Date(now.getTime()+1*1000*60)) //발급날짜 계산 유효기간 1년 7일로 하고싶다면 1*(1000*60*60*24*7)
+                .setExpiration(new Date(now.getTime()+1*1000*60*60*24)) //발급날짜 계산 유효기간 1년 7일로 하고싶다면 1*(1000*60*60*24*7)
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
                 .compact();
         return  Token.builder().accessToken(accessToken).refreshToken(refreshToken).email(userNum).build();
@@ -50,7 +50,7 @@ public class JwtService {
                 .claim("userNum",userNum)
                 .claim("username",username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime()+1*(1000*60*30))) //발급날짜 계산 유효기간 30분
+                .setExpiration(new Date(now.getTime()+1*(1000*60))) //발급날짜 계산 유효기간 30분 1000*60*30
                 .signWith(SignatureAlgorithm.HS256,JWT_SECRET_KEY) //signature 부분
                 .compact(); // 생성
 

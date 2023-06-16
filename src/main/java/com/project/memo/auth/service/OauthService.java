@@ -92,10 +92,6 @@ public class OauthService {
                             googleUser.getEmail(), googleUser.getPicture());
                     userService.save(userSaveRequestDto);
                 }
-                //있으면 삭제
-                tokenService.deleted(jwtToken.getEmail());
-                tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
-                tokenService.save(tokenSave);
                 return getSocialOAuthRes;
             }
             else if (socialLoginType.toString().equals("NAVER"))
@@ -115,10 +111,6 @@ public class OauthService {
                             naverUser.getResponse().get("profile_image"));
                     userService.save(userSaveRequestDto);
                 }
-                //있으면 삭제
-                tokenService.deleted(jwtToken.getEmail());
-                tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
-                tokenService.save(tokenSave);
                 return getSocialOAuthRes;
             }
         }

@@ -22,4 +22,9 @@ public interface directoryRepository extends JpaRepository<directory, Integer> {
     @Modifying
     @Query(value ="DELETE from directory where uuid=:uuid", nativeQuery = true)
     int dirDelete(@Param("uuid") String uuid);
+
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE directory set dirName=:dirName where uuid=:uuid", nativeQuery = true)
+    int updateDirName(@Param("uuid") String uuid, @Param("dirName") String dirName);
 }

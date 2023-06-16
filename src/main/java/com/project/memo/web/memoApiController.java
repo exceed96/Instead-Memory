@@ -5,6 +5,8 @@ import com.project.memo.auth.jwt.JwtService;
 import com.project.memo.auth.token.makeCookie;
 import com.project.memo.auth.token.tokenService;
 import com.project.memo.common.ResultMsg;
+import com.project.memo.exception.DirSameNameException;
+import com.project.memo.exception.TokenExpiredException;
 import com.project.memo.service.memoService;
 import com.project.memo.service.userService;
 import com.project.memo.web.DTO.memoDTO.MemoResponseDto;
@@ -33,74 +35,84 @@ import static com.project.memo.util.Define.MEMO_VERSION_PATH;
 public class memoApiController {
     private final memoService memoService;
     private final JwtService jwtService;
-
-    private final makeCookie makeCookie;
-    private final userService userService;
     private final tokenService tokenService;
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
 
 //    @PostMapping("/v1/memo")
-    @RequestMapping(value = "/memo") //처음 저장하는 api
-    public String memoSave(@RequestBody memoVo memoVo,HttpServletRequest request,HttpServletResponse response){//, @LoginUser SessionUser user
-        String title = memoVo.getTitle();
-        String content = memoVo.getContent();
-
-        String token = tokenService.checkAccessToken(request,response);
-
-//         JWT 토큰 사용하기
+    @RequestMapping(value = "/memo") //메모저장api
+    public String memoSave(@RequestBody memoVo memoVo,@CookieValue("refresh") String refresh, HttpServletRequest request,HttpServletResponse response){//, @LoginUser SessionUser user
+        String token = null;
+        try {
+            token = tokenService.checkAccessToken(request,response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return "390";
+        }
         String email = jwtService.getUserNum(token);
-        System.out.println("여기는 메모저장 이메일 입니다. " +email);
-        String id = UUID.randomUUID().toString(); // idx(int)로 구분하지 않고 랜덤 해시값을 통해 메모 구분
-        boolean important = memoVo.isImportant();
-//        int bookMark = memoVo.getBookMark();
-        memoSaveRequestDto requestDto = new memoSaveRequestDto(title,content,email, important,0,id);
+//         JWT 토큰 사용하기
+        memoSaveRequestDto requestDto = new memoSaveRequestDto(memoVo.getTitle(), memoVo.getContent(), email,
+                memoVo.isImportant(),0, UUID.randomUUID().toString());
         memoService.save(requestDto);
         return "200";
     }
     @PutMapping(value = "/memo/update") //memo 전체 업데이트
-    public boolean memoImportant(@RequestBody memoVo memoVo, HttpServletRequest request,HttpServletResponse response){
-        tokenService.checkAccessToken(request,response);
-
-        boolean important = memoVo.isImportant();
-        String title = memoVo.getTitle();
-        String content = memoVo.getContent();
-        String uuid = memoVo.getUuid();
+    public void memoImportant(@RequestBody memoVo memoVo, @CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){
+        try {
+            tokenService.checkAccessToken(request,response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return ;
+        }
         //uuid와 같은 메모에 대한 전체를 찾아오기
-        List<MemoResponseDto> list = memoService.findMemo(uuid);
+        List<MemoResponseDto> list = memoService.findMemo(memoVo.getUuid());
         //important변경값 업데이트 저장하기
-        memoService.memoUpdate(uuid,title, content, important);
-        return true;
+        memoService.memoUpdate(memoVo.getUuid(),memoVo.getTitle(), memoVo.getContent(), memoVo.isImportant());
      }
     @GetMapping(value = "/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
-    public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,HttpServletRequest request,HttpServletResponse response){
-        tokenService.checkAccessToken(request,response);
+    public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,@CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){
+        try {
+            tokenService.checkAccessToken(request,response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return new ResultMsg<>(false, "Token expired", null);
+        }
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUserMemo(uuid));
     }
     @GetMapping("/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
-    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(HttpServletRequest request,HttpServletResponse response)//@LoginUser SessionUser user
+    public @ResponseBody ResultMsg<MemoResponseDto> memoFind(@CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response)//@LoginUser SessionUser user
     {
-        String token = tokenService.checkAccessToken(request,response);
+        String token = null;
+        try {
+            token = tokenService.checkAccessToken(request, response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return new ResultMsg<>(false, "Token expired", null);
+        }
         // JWT 토큰 사용하기
         String email = jwtService.getUserNum(token);
         return new ResultMsg<MemoResponseDto>(true, "memo",memoService.findUser(email));
     }
     @PutMapping(value = "/memo/important") //important만 업데이트 해주는 api
-    public String memoImportant(@RequestBody uuidVO uuid, HttpServletRequest request,HttpServletResponse response){
-        tokenService.checkAccessToken(request,response);
-
-        String id = uuid.getUuid();
-        boolean important = memoService.findMemoImportant(id);
-        System.out.println("v1/memo/important : " + important);
-        if (important == false) important = true;
-        else important = false;
-        System.out.println("v1/memo/important : change " + important);
-        memoService.updateImportant(id, important);
+    public String memoImportant(@RequestBody uuidVO uuid,@CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){
+        try {
+            tokenService.checkAccessToken(request,response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return "390";
+        }
+        boolean important = memoService.findMemoImportant(uuid.getUuid());
+        memoService.updateImportant(uuid.getUuid(), important);
         return "200";
     }
     @DeleteMapping("/memo/delete")
-    public void memoDelete(@RequestBody memoVo memoVo, HttpServletRequest request,HttpServletResponse response){
-        tokenService.checkAccessToken(request,response);
+    public void memoDelete(@RequestBody memoVo memoVo, @CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){
+        try {
+            tokenService.checkAccessToken(request,response,refresh);
+        } catch (TokenExpiredException e) {
+            response.setStatus(390);
+            return ;
+        }
         memoService.deleted(memoVo.getUuid());
     }
 }

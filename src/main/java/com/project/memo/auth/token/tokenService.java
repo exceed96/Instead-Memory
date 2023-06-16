@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,19 +40,25 @@ public class tokenService {
     public void checkRefreshToken(HttpServletResponse response){
 
     }
-    public String checkAccessToken(HttpServletRequest request, HttpServletResponse response)
+    public String checkAccessToken(HttpServletRequest request, HttpServletResponse response,String refresh)
     {
         String jwtToken = request.getHeader("Authorization");
-        boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
-        if (!check){
-            //refreshtoken 을 이용햐여 token table 에서 이메일 받아오기
-            String email = getfindemail(request.getHeader("Cookie").replace("refresh=", ""));
-            //이 이메일을 가진 사람의 이름을 가지고 와서 accessToken 만들어서 리턴해주기!
-            String user = userService.findUserName(email);
-            String accessToken = jwtService.createAccessToken(email, user);
-            response.addHeader("Authorization", "Bearer " + accessToken);
+        try{
+            boolean check = jwtService.validateToken(jwtToken.replace("Bearer",""));
+            if (!check){
+                // arp_scroll_position=0;
+                //refreshtoken 을 이용햐여 token table 에서 이메일 받아오기
+                String email = getfindemail(refresh);
+                //이 이메일을 가진 사람의 이름을 가지고 와서 accessToken 만들어서 리턴해주기!
+                String user = userService.findUserName(email);
+                String accessToken = jwtService.createAccessToken(email, user);
+                System.out.println(email +" : " + user);
+                response.addHeader("Authorization", "Bearer " + accessToken);
+                throw new TokenExpiredException();
+            }
+        }catch(TokenExpiredException e) {
             response.setStatus(605);
-            throw new TokenExpiredException();
+            throw e;
         }
         return jwtToken;
     }

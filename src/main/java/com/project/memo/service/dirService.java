@@ -29,14 +29,16 @@ public class dirService {
     @Transactional
     public void sameName(String dirName,String email, HttpServletResponse response){
        int num = directoryRepository.sameName(dirName,email);
-        if (num != 0) {
-            response.setStatus(606);
+        if (num != 0)
             throw new DirSameNameException();
-        }
     }
 
     @Transactional
     public void deleted(String uuid) {
         directoryRepository.dirDelete(uuid);
+    }
+    @Transactional
+    public void updateDirName(String uuid,String dirName) {
+        directoryRepository.updateDirName(uuid,dirName);
     }
 }

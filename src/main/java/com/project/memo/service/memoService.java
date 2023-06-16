@@ -54,7 +54,10 @@ public class memoService {
 //    findMemoImportant : uuid에 대한 행을 가지고와서 important만 리턴
     @Transactional
     public boolean findMemoImportant(String uuid){
-        return memoContentRepository.findImportant(uuid);
+        boolean important = memoContentRepository.findImportant(uuid);
+        if (important == false) important = true;
+        else important = false;
+        return important;
     }
 //    updateImportant
     @Transactional
@@ -62,8 +65,4 @@ public class memoService {
         memoContentRepository.updateImportant(uuid,important);
     }
 
-    @Transactional
-    public void updateDirName(String uuid,String dirName) {
-        memoContentRepository.updateDirName(uuid,dirName);
-    }
 }
