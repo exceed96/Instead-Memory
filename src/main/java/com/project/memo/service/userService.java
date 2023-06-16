@@ -18,4 +18,9 @@ public class userService {
     public String findUserEmail(String email){
         return userRepository.findAllIndex(email);
     }
+    @Transactional
+    public String findUserName(String email){
+        return userRepository.findUser(email);
+    }
+
 }

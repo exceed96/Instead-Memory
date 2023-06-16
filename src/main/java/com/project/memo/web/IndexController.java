@@ -13,16 +13,16 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     private final HttpSession httpSession;
     private final memoService memoService;
-    @GetMapping("/")
-    public String index(Model model){//Model model,@LoginUser SessionUser user
-//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-//        if(user != null) {
-//            model.addAttribute("userName", user.getName());
-//
-//            model.addAttribute("memo", memoService.findUser(user.getEmail()));
-//        }
-        return "index";
-    }
+//    @GetMapping("/")
+//    public String index(){//Model model,@LoginUser SessionUser user
+////        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+////        if(user != null) {
+////            model.addAttribute("userName", user.getName());
+////
+////            model.addAttribute("memo", memoService.findUser(user.getEmail()));
+////        }
+//        return "200";
+//    }
 
     @GetMapping("/memo/save")
     public String memoSave() {

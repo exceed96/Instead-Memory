@@ -19,8 +19,12 @@ public class directory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
     private String dirName;
+    private String email;
+    private String uuid;
     @Builder
-    public directory(String dirName){
+    public directory(String dirName,String email,String uuid){
         this.dirName = dirName;
+        this.email = email;
+        this.uuid = uuid;
     }
 }
