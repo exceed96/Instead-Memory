@@ -64,5 +64,4 @@ public class memoService {
     public void updateImportant(String uuid,boolean important) {
         memoContentRepository.updateImportant(uuid,important);
     }
-
 }

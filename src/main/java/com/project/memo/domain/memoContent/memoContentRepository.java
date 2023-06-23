@@ -37,6 +37,4 @@ public interface memoContentRepository extends JpaRepository<memoContent, Intege
     @Query(value ="UPDATE memoContent set important=:important where uuid=:uuid", nativeQuery = true)
     int updateImportant(@Param("uuid") String uuid, @Param("important") boolean important);
 
-
-
 }

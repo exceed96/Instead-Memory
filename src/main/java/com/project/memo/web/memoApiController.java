@@ -23,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.http.HttpHeaders;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,6 +83,7 @@ public class memoApiController {
     @GetMapping("/memo/find") //찾아서 그 친구와 맞는 사람의 메모 return
     public @ResponseBody ResultMsg<MemoResponseDto> memoFind(@CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response)//@LoginUser SessionUser user
     {
+        tokenService.checkRefreshToken(response,refresh);
         String token = null;
         try {
             token = tokenService.checkAccessToken(request, response,refresh);
@@ -107,6 +109,7 @@ public class memoApiController {
     }
     @DeleteMapping("/memo/delete")
     public void memoDelete(@RequestBody memoVo memoVo, @CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){
+        String email = null;
         try {
             tokenService.checkAccessToken(request,response,refresh);
         } catch (TokenExpiredException e) {
@@ -115,4 +118,5 @@ public class memoApiController {
         }
         memoService.deleted(memoVo.getUuid());
     }
+
 }
