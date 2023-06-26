@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import getAccessToken from "./accessTokenState";
+import SavedMemo from "../components/Main/SavedMemo/SavedMemo";
 
 const importMemoStateInitial = {
   modal: false,
   isOpen: false,
   importMemo: [],
-  importMemoGetData: true,
+  importMemoGetData: false,
 };
 
 const importMemoState = createSlice({
@@ -30,22 +32,26 @@ const importMemoState = createSlice({
 
 export const getImportMemo = () => {
   return async (dispatch) => {
-    const getUrl =
-      "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
-    const header = {
-      Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-    };
-    const data = await axios({
-      method: "get",
-      url: getUrl,
-      headers: header,
-    });
-    const parseData = data.data.data.filter((memo) => {
-      if (memo.important) {
-        return memo;
-      }
-    });
-    dispatch(importMemoActions.setImportMemo([...parseData]));
+    try {
+      const getUrl = "https://api.insteadmemo.kr/v1/memo/find";
+      const header = {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      };
+      const data = await axios({
+        method: "get",
+        url: getUrl,
+        headers: header,
+        withCredentials: true,
+      });
+      const parseData = data.data.data.filter((memo) => {
+        if (memo.important) {
+          return memo;
+        }
+      });
+      dispatch(importMemoActions.setImportMemo([...parseData]));
+    } catch (error) {
+      dispatch(getAccessToken(error, getImportMemo));
+    }
   };
 };
 

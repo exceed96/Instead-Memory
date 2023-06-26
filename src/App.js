@@ -1,12 +1,12 @@
-import React from "react";
+import "./App.css";
 import { Reset } from "styled-reset";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MemoHomePage from "./pages/MemoHome";
 import LoginPage from "./pages/Login";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <LoginPage />,
   },
   {
@@ -21,10 +21,6 @@ function App() {
       <RouterProvider router={router}>
         <Reset />
       </RouterProvider>
-      {/* <Reset />
-      <Header user={user.username}></Header>
-      <Main />
-      <Footer /> */}
     </>
   );
 }

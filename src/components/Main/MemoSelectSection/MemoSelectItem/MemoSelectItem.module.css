@@ -1,0 +1,44 @@
+.memoSection {
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+  font-size: 30px;
+  cursor: pointer;
+  color: grey;
+  text-align: center;
+}
+
+.memoSection .hr {
+  visibility: hidden;
+  border: none;
+  border-bottom: 4px solid #4839fa;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 0px;
+}
+
+.memoSection:hover .hr,
+.memoSection:hover {
+  color: black;
+  visibility: visible;
+}
+
+.memoSection hr::after {
+  content: ".";
+  display: inline-block;
+  position: absolute;
+  top: 1.5rem;
+  right: 10px;
+  padding: 0 2px;
+  background-color: white;
+  color: transparent;
+}
+
+.active {
+  visibility: visible;
+  border: none;
+  border-bottom: 4px solid #4839fa;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 0px;
+}

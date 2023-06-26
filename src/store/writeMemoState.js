@@ -19,6 +19,9 @@ const writeMemoState = createSlice({
     changeImportMemo(state, action) {
       state.importMemo = !state.importMemo;
     },
+    setImportMemo(state, action) {
+      state.importMemo = action.payload;
+    },
   },
 });
 

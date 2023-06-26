@@ -4,6 +4,9 @@ import mainReducer from "./mainState";
 import writeMemoReducers from "./writeMemoState";
 import importMemoReducers from "./importMemoState";
 import expansionMemoReducers from "./expansionMemoState";
+import folderModalReducers from "./folderModalState";
+import selectSectionReducers from "./selectSectionState";
+
 // const headerState = (
 //   state = { modal: false, isOpen: false, width: window.innerWidth },
 //   action
@@ -36,6 +39,8 @@ const store = configureStore({
     writeMemoState: writeMemoReducers,
     importMemoState: importMemoReducers,
     expansionMemoState: expansionMemoReducers,
+    folderModalState: folderModalReducers,
+    selectSectionState: selectSectionReducers,
   },
 });
 

@@ -1,0 +1,44 @@
+:root {
+  --main-memo-width: 350px;
+  --main-memo-height: 100px;
+  --main-memo-titleFontSize: 20px;
+  --main-memo-textFontsize: 16px;
+  --main-memo-titleTextPadding: 5px;
+  --main-box-borderRadius: 10px;
+  --main-box-transition: box-shadow 0.3s ease-in-out;
+}
+
+.memo {
+  width: 360px;
+  height: var(--main-memo-height);
+  margin: 18px;
+  border-radius: var(--main-box-borderRadius);
+  padding: 10px;
+  margin: 10px 30px;
+  cursor: pointer;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.memo .savedMemoTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.memo .savedMemoTop .memoTitle {
+  font-size: 1.5rem;
+  color: #343434;
+}
+
+.memo .savedMemoTop .memoContent {
+  font-size: 16px;
+  color: #525252;
+}
+
+.memo .savedMemoBottom {
+  font-size: 1rem;
+  color: #282828;
+  overflow: hidden;
+}

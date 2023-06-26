@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const expansionMemoStateInitial = {
   updateTitleText: "",
   updateMainText: "",
-  singleMemo: {},
-  expansionMemo: false,
+  updateImportant: false,
+  isOpen: false,
 };
 
 const expansionMemoState = createSlice({
@@ -18,8 +17,14 @@ const expansionMemoState = createSlice({
     updateMainTextHandler(state, action) {
       state.updateMainText = action.payload;
     },
-    setExpansionMemo(state) {
-      state.expansionMemo = !state.expansionMemo;
+    updateImportantHandler(state) {
+      state.updateImportant = !state.updateImportant;
+    },
+    setImportantHandler(state, action) {
+      state.updateImportant = action.payload;
+    },
+    setModalHandler(state) {
+      state.isOpen = !state.isOpen;
     },
   },
 });
