@@ -17,14 +17,13 @@ import javax.persistence.Id;
 @Entity
 public class memoContent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idx;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String uuid;
     private String title;
     private String content;
     private String email;
     private boolean important;
     private int bookMark;
-    private String uuid;
     @Builder
     public memoContent(String title, String content,String email, boolean important, int bookMark,String uuid){
 

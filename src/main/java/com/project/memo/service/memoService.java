@@ -18,7 +18,7 @@ public class memoService {
 
     @Transactional
     public void save(memoSaveRequestDto requestDto){
-        memoContentRepository.save(requestDto.toEntity()).getIdx(); // 저장
+        memoContentRepository.save(requestDto.toEntity()); // 저장
     }
 
     @Transactional

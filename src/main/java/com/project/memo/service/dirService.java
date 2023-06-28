@@ -18,7 +18,7 @@ public class dirService {
     private final directoryRepository directoryRepository;
     @Transactional
     public void save(DirSaveRequestDto requestDto){
-        directoryRepository.save(requestDto.toEntity()).getIdx(); // 저장
+        directoryRepository.save(requestDto.toEntity()); // 저장
     }
     @Transactional
     public List<DirResponseDto> getDirectory(String email){
