@@ -12,11 +12,13 @@ public class DirSaveRequestDto {
     private String dirName;
     private String email;
     private String uuid;
+    private int user_id;
     @Builder
-    public DirSaveRequestDto(String dirName,String email,String uuid){
+    public DirSaveRequestDto(String dirName,String email,String uuid,int user_id){
         this.dirName = dirName;
         this.email = email;
         this.uuid = uuid;
+        this.user_id = user_id;
     }
 
     public directory toEntity(){
@@ -24,6 +26,7 @@ public class DirSaveRequestDto {
                 .dirName(this.dirName)
                 .email(this.email)
                 .uuid(this.uuid)
+                .user_id(this.user_id)
                 .build();
     }
 }

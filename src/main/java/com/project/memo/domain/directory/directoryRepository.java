@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface directoryRepository extends JpaRepository<directory, Integer> {
+public interface directoryRepository extends JpaRepository<directory, String> {
 
     @Query(value = "SELECT * from directory where email=:email", nativeQuery = true)
     List<directory> getDir(@Param("email") String email);

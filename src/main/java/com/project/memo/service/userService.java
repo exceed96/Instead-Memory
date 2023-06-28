@@ -23,4 +23,9 @@ public class userService {
         return userRepository.findUser(email);
     }
 
+    @Transactional
+    public int user_key(String email){
+        return userRepository.user_key(email);
+    }
+
 }

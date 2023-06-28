@@ -16,15 +16,16 @@ import javax.persistence.Id;
 @Entity
 public class directory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idx;
+    private String uuid;
+    private int user_id;
     private String dirName;
     private String email;
-    private String uuid;
+
     @Builder
-    public directory(String dirName,String email,String uuid){
+    public directory(String dirName,String email,String uuid,int user_id){
         this.dirName = dirName;
         this.email = email;
         this.uuid = uuid;
+        this.user_id = user_id;
     }
 }

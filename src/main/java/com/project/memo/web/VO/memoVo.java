@@ -10,5 +10,6 @@ public class memoVo {
     String content;
     boolean important;
     String uuid;
+    boolean trash;
 //    int bookMark;
 }

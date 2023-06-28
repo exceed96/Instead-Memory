@@ -18,7 +18,7 @@ public class memoService {
 
     @Transactional
     public void save(memoSaveRequestDto requestDto){
-        memoContentRepository.save(requestDto.toEntity()).getIdx(); // 저장
+        memoContentRepository.save(requestDto.toEntity()); // 저장
     }
 
     @Transactional
@@ -47,8 +47,8 @@ public class memoService {
         memoContentRepository.menuDelete(uuid);
     }
     @Transactional
-    public void memoUpdate(String uuid,String title,String content, boolean important) {
-        memoContentRepository.memoUpdated(uuid,important,title,content);
+    public void memoUpdate(String uuid,String title,String content, boolean important,boolean trash) {
+        memoContentRepository.memoUpdated(uuid,important,title,content,trash);
     }
 
 //    findMemoImportant : uuid에 대한 행을 가지고와서 important만 리턴
@@ -64,5 +64,4 @@ public class memoService {
     public void updateImportant(String uuid,boolean important) {
         memoContentRepository.updateImportant(uuid,important);
     }
-
 }

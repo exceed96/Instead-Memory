@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DirResponseDto {
     private String dirName;
+    private int user_id;
     private String email;
     private String uuid;
     public DirResponseDto(directory entity){
         this.dirName = entity.getDirName();
         this.email = entity.getEmail();
         this.uuid = entity.getUuid();
+        this.user_id = entity.getUser_id();
     }
 }

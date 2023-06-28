@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface memoContentRepository extends JpaRepository<memoContent, Integer> {
+public interface memoContentRepository extends JpaRepository<memoContent, String> {
     @Query(value = "SELECT * from memoContent where email=:email", nativeQuery = true)
     List<memoContent> findByUser(@Param("email") String email);
 
@@ -25,8 +25,8 @@ public interface memoContentRepository extends JpaRepository<memoContent, Intege
 
     @Transactional
     @Modifying
-    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
-    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content);
+    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content, trash=:trash where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
+    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content, @Param("trash") boolean trash);
 
 //    findImportant important하나만 찾아서 리턴
     @Query(value = "SELECT important from memoContent where uuid=:uuid", nativeQuery = true)
@@ -36,7 +36,5 @@ public interface memoContentRepository extends JpaRepository<memoContent, Intege
     @Modifying
     @Query(value ="UPDATE memoContent set important=:important where uuid=:uuid", nativeQuery = true)
     int updateImportant(@Param("uuid") String uuid, @Param("important") boolean important);
-
-
 
 }
