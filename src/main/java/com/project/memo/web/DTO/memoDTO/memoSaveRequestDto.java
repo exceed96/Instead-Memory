@@ -14,14 +14,18 @@ public class memoSaveRequestDto {
     private boolean important;
     private int bookMark;
     private String uuid;
+    private int user_id; //usre idx 외래키
+    private boolean trash;
     @Builder
-    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid){
+    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid,int user_id,boolean trash){
         this.title = title;
         this.content = content;
         this.email = email;
         this.important = important;
         this.bookMark = bookMark;
         this.uuid = uuid;
+        this.user_id = user_id;
+        this.trash = trash;
     }
 
     public memoContent toEntity(){
@@ -32,6 +36,8 @@ public class memoSaveRequestDto {
                 .important(this.important)
                 .bookMark(this.bookMark)
                 .uuid(this.uuid)
+                .user_id(this.user_id)
+                .trash(this.trash)
                 .build();
     }
 }

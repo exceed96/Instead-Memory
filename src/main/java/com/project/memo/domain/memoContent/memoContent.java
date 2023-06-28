@@ -19,13 +19,15 @@ public class memoContent {
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uuid;
+    private int user_id;
     private String title;
     private String content;
     private String email;
     private boolean important;
     private int bookMark;
+    private boolean trash;
     @Builder
-    public memoContent(String title, String content,String email, boolean important, int bookMark,String uuid){
+    public memoContent(String title, String content,String email, boolean important, int bookMark,String uuid,int user_id,boolean trash){
 
         this.title = title;
         this.content = content;
@@ -33,6 +35,8 @@ public class memoContent {
         this.email = email;
         this.bookMark = bookMark;
         this.uuid = uuid;
+        this.user_id = user_id;
+        this.trash = trash;
     }
 
 }

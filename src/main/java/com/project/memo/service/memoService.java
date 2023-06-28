@@ -47,8 +47,8 @@ public class memoService {
         memoContentRepository.menuDelete(uuid);
     }
     @Transactional
-    public void memoUpdate(String uuid,String title,String content, boolean important) {
-        memoContentRepository.memoUpdated(uuid,important,title,content);
+    public void memoUpdate(String uuid,String title,String content, boolean important,boolean trash) {
+        memoContentRepository.memoUpdated(uuid,important,title,content,trash);
     }
 
 //    findMemoImportant : uuid에 대한 행을 가지고와서 important만 리턴

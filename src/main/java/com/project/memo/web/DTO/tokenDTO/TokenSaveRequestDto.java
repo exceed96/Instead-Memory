@@ -12,13 +12,15 @@ import lombok.NoArgsConstructor;
 public class TokenSaveRequestDto {
     private String refreshToken;
     private String accessToken;
+    private int user_id;
     private String email;
 
     @Builder
-    public TokenSaveRequestDto(String refreshToken,String email,String accessToken){
+    public TokenSaveRequestDto(String refreshToken,String email,String accessToken,int user_id){
         this.refreshToken = refreshToken;
         this.email = email;
         this.accessToken = accessToken;
+        this.user_id = user_id;
     }
 
     public Token toEntity(){
@@ -26,6 +28,7 @@ public class TokenSaveRequestDto {
                 .refreshToken(this.refreshToken)
                 .accessToken(this.accessToken)
                 .email(this.email)
+                .user_id(this.user_id)
                 .build();
     }
 }

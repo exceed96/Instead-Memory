@@ -25,8 +25,8 @@ public interface memoContentRepository extends JpaRepository<memoContent, String
 
     @Transactional
     @Modifying
-    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
-    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content);
+    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content, trash=:trash where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
+    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content, @Param("trash") boolean trash);
 
 //    findImportant important하나만 찾아서 리턴
     @Query(value = "SELECT important from memoContent where uuid=:uuid", nativeQuery = true)

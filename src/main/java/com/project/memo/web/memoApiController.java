@@ -37,6 +37,7 @@ public class memoApiController {
     private final memoService memoService;
     private final JwtService jwtService;
     private final tokenService tokenService;
+    private final userService userService;
     @Value("${jwt.token.secret.key}")
     private String JWT_SECRET_KEY;
 
@@ -51,9 +52,11 @@ public class memoApiController {
             return "390";
         }
         String email = jwtService.getUserNum(token);
+        int user_id = userService.user_key(email); //외래키설정에 넣어주기위한 user테이블에서 idx키를 찾아와서 memoContent에 저장
+
 //         JWT 토큰 사용하기
         memoSaveRequestDto requestDto = new memoSaveRequestDto(memoVo.getTitle(), memoVo.getContent(), email,
-                memoVo.isImportant(),0, UUID.randomUUID().toString());
+                memoVo.isImportant(),0, UUID.randomUUID().toString(),user_id, memoVo.isTrash());
         memoService.save(requestDto);
         return "200";
     }
@@ -68,7 +71,7 @@ public class memoApiController {
         //uuid와 같은 메모에 대한 전체를 찾아오기
         List<MemoResponseDto> list = memoService.findMemo(memoVo.getUuid());
         //important변경값 업데이트 저장하기
-        memoService.memoUpdate(memoVo.getUuid(),memoVo.getTitle(), memoVo.getContent(), memoVo.isImportant());
+        memoService.memoUpdate(memoVo.getUuid(),memoVo.getTitle(), memoVo.getContent(), memoVo.isImportant(), memoVo.isTrash());
      }
     @GetMapping(value = "/memo/find/userInfo") //uuid에 대한 유저 정보를 한줄 찾아오는 ..
     public @ResponseBody ResultMsg<MemoResponseDto> memofindUuid(@RequestParam(value = "uuid") String uuid,@CookieValue("refresh") String refresh,HttpServletRequest request,HttpServletResponse response){

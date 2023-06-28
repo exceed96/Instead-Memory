@@ -13,6 +13,7 @@ public class MemoResponseDto {
     private boolean important;
     private int bookMark;
     private String uuid;
+    private boolean trash;
     public MemoResponseDto(memoContent entity){
         this.uuid = entity.getUuid();
         this.title = entity.getTitle();
@@ -20,5 +21,6 @@ public class MemoResponseDto {
         this.email = entity.getEmail();
         this.important = entity.isImportant();
         this.bookMark = entity.getBookMark();
+        this.trash = entity.isTrash();
     }
 }

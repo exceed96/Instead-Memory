@@ -31,6 +31,7 @@ public class directoryContorller {
     private final memoService memoService;
     private final JwtService jwtService;
     private final tokenService tokenService;
+    private final userService userService;
 
     /*
     디렉토리 저장하는 API
@@ -55,7 +56,8 @@ public class directoryContorller {
             return "390";
         }
         String id = UUID.randomUUID().toString();
-        DirSaveRequestDto requestDto = new DirSaveRequestDto(dirvo.getDirName(),email,id);
+        int user_id = userService.user_key(email); //외래키설정에 넣어주기위한 user테이블에서 idx키를 찾아와서 memoContent에 저장
+        DirSaveRequestDto requestDto = new DirSaveRequestDto(dirvo.getDirName(),email,id,user_id);
         dirService.save(requestDto);
         return "200";
     }

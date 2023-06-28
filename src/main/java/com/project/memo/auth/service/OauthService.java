@@ -29,7 +29,7 @@ public class OauthService {
     private final userService userService;
     private final JwtService jwtService;
     private final tokenService tokenService;
-    private String user_id = null; //email있는지 없는지 체크
+    private String emailCheck = null; //email있는지 없는지 체크
     private GoogleOAuthToken oAuthToken = null;
     private ResponseEntity<String> userInfoResponse = null;
     private GoogleUser googleUser = null;
@@ -56,15 +56,15 @@ public class OauthService {
             oAuthToken = googleOauth.getAccessToken(accessTokenResponse);
             userInfoResponse = googleOauth.requeseUserInfo(oAuthToken);//액세스 토큰을 다시 구글로 보내 구글에 저장된 사용자 정보가 담긴 응답객체를 받아온다.
             googleUser = googleOauth.getUserInfo(userInfoResponse);//다시 json형식의 응답객체를 자바객체로 역직렬화
-            user_id = googleUser.getEmail();
+            emailCheck = googleUser.getEmail();
         }
         else if (socialLoginType.toString().equals("NAVER")) {
             naverToken = naverOauth.getAccessToken(accessTokenResponse);
             userInfoResponse = naverOauth.requeseUserInfo(naverToken);
             naverUser = naverOauth.getUserInfo(userInfoResponse);
-            user_id=naverUser.getResponse().get("email");
+            emailCheck=naverUser.getResponse().get("email");
         }
-        if(user_id!=""){
+        if(emailCheck!=""){
             //서버에 user가 존재하면 앞으로 회원 인가 처리를 위한 jwtToken을 발급한다.
             GetSocialOAuthRes getSocialOAuthRes = tokenIssueSave(socialLoginType);
             return getSocialOAuthRes;
@@ -74,7 +74,7 @@ public class OauthService {
     private GetSocialOAuthRes tokenIssueSave(SocialLoginType socialLoginType)
     {
         if (socialLoginType.toString().equals("GOOGLE")) {
-            Token jwtToken = jwtService.createJwt(user_id, googleUser.getName());
+            Token jwtToken = jwtService.createJwt(emailCheck, googleUser.getName());
 
             boolean check = getNameCheck(googleUser.getEmail());
             checkSave(check,jwtToken,"google"); //check시 false라면 토큰도 저장하고 유저도 저장함
@@ -85,7 +85,7 @@ public class OauthService {
             return getSocialOAuthRes;
         }else if (socialLoginType.toString().equals("NAVER"))
         {
-            Token jwtToken = jwtService.createJwt(user_id, naverUser.getResponse().get("name"));
+            Token jwtToken = jwtService.createJwt(emailCheck, naverUser.getResponse().get("name"));
             boolean check = getNameCheck(naverUser.getResponse().get("email"));
             checkSave(check,jwtToken,"naver"); //check시 false라면 토큰도 저장하고 유저도 저장함
 
@@ -98,11 +98,12 @@ public class OauthService {
     }
     private GetSocialOAuthRes loginRefreshCheck(Token jwtToken,String social)
     {
-        String refresh = tokenService.findRefreshtoken(user_id); //user_id와 같은 refreshToken찾아옴
+        String refresh = tokenService.findRefreshtoken(emailCheck); //user_id와 같은 refreshToken찾아옴
 
         if (StringUtils.isEmpty(refresh)) { //false 새롭게 들어오는거 싹다 저장해서 리턴
              //refreshToken이 만료되지않았는지 체크해줌!!
-            tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
+            int user_id = userService.user_key(jwtToken.getEmail());
+            tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken(),user_id);
             tokenService.save(tokenSave);
             refresh = jwtToken.getRefreshToken();
         }
@@ -122,8 +123,6 @@ public class OauthService {
     private void checkSave(boolean check,Token jwtToken,String social)
     {
         if (check) {
-            tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken());
-            tokenService.save(tokenSave);
             /* user 저장된게 없을때 저장해주기 */
             if (social.equals("google")) {
                 userSaveRequestDto = new UserSaveRequestDto(googleUser.getName(),
@@ -135,6 +134,9 @@ public class OauthService {
                         naverUser.getResponse().get("profile_image"));
                 userService.save(userSaveRequestDto);
             }
+            int user_id = userService.user_key(jwtToken.getEmail());
+            tokenSave = new TokenSaveRequestDto(jwtToken.getRefreshToken(),jwtToken.getEmail(),jwtToken.getAccessToken(),user_id);
+            tokenService.save(tokenSave);
         }
     }
     private SocialOauth findSocialOauthByType(SocialLoginType socialLoginType) {

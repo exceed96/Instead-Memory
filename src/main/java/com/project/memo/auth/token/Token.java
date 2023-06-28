@@ -17,13 +17,15 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String refreshToken;
+    private int user_id;
     private String accessToken;
     private String email;
     @Builder
-    public Token(String email, String refreshToken, String accessToken)
+    public Token(String email, String refreshToken, String accessToken,int user_id)
     {
         this.email = email;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.user_id = user_id;
     }
 }
