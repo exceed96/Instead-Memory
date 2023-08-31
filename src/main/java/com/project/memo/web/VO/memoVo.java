@@ -3,6 +3,8 @@ package com.project.memo.web.VO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class memoVo {
@@ -11,5 +13,4 @@ public class memoVo {
     boolean important;
     String uuid;
     boolean trash;
-//    int bookMark;
 }

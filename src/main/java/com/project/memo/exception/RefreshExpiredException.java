@@ -7,17 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
- *     액세스 토큰이 만료된 경우 발생
- *     error code: 390
+ *     리프레시 토큰이 만료된 경우 발생
+ *  *     error code: 392
  * </pre>
  * @author hyerimkim108
  */
 @Getter
 @Slf4j
-public class TokenExpiredException extends RuntimeException {
+public class RefreshExpiredException extends RuntimeException {
     private int errorCode;
-    public TokenExpiredException() {
-        super(ResponseMsg.NO_ACCESSTOKEN);
-        this.errorCode = StatusCode.UNACCESSTOKEN;
+
+    public RefreshExpiredException() {
+        super(ResponseMsg.NO_REFRESHTOKEN);
+        this.errorCode = StatusCode.UNREFRESHTOKEN;
     }
 }

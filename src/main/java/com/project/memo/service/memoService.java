@@ -47,8 +47,16 @@ public class memoService {
         memoContentRepository.menuDelete(uuid);
     }
     @Transactional
-    public void memoUpdate(String uuid,String title,String content, boolean important,boolean trash) {
-        memoContentRepository.memoUpdated(uuid,important,title,content,trash);
+    public void memoUpdate(String uuid,String title,String content, boolean important) {
+        memoContentRepository.memoUpdated(uuid,important,title,content);
+    }
+    @Transactional
+    public void saveNull(String uuid) {
+        memoContentRepository.saveNull(uuid);
+    }
+    @Transactional
+    public void updateTrash(boolean trash,String uuid) {
+        memoContentRepository.updateTrash(trash,uuid);
     }
 
 //    findMemoImportant : uuid에 대한 행을 가지고와서 important만 리턴
@@ -59,9 +67,18 @@ public class memoService {
         else important = false;
         return important;
     }
-//    updateImportant
+
+    @Transactional
+    public void updateDrectory_id(String dirUUID,String memoUUID) {
+        memoContentRepository.updateDrectory_id(dirUUID,memoUUID);
+    }
     @Transactional
     public void updateImportant(String uuid,boolean important) {
         memoContentRepository.updateImportant(uuid,important);
+    }
+
+    @Transactional
+    public void deleteAll(String email) {
+        memoContentRepository.deleteAll(email);
     }
 }

@@ -64,13 +64,4 @@ public class OauthController {
         redirectView.setUrl("https://insteadmemo.kr/memo/?AccessToken="+token.getJwtAccessToken());
         return redirectView;
     }
-//    @PostMapping(value= "/login")
-//    public ResponseEntity<?> login(@RequestBody uuidVO uuid, HttpServletResponse response)
-//    {
-//        String token = tokenService.findRefreshtoken(uuid.getEmail());
-//        System.out.println("token " + token);
-//        ResponseCookie cookie =makeCookie.createCookie("refresh", token);
-//        response.addHeader("Set-Cookie", cookie.toString());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 }
