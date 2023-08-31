@@ -25,8 +25,8 @@ public interface memoContentRepository extends JpaRepository<memoContent, String
 
     @Transactional
     @Modifying
-    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content, trash=:trash where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
-    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content, @Param("trash") boolean trash);
+    @Query(value ="UPDATE memoContent set important=:important , title=:title , content=:content where uuid=:uuid", nativeQuery = true) //, title=:title, content:=content
+    int memoUpdated(@Param("uuid") String uuid, @Param("important") boolean important,@Param("title") String title,@Param("content") String content);
 
 //    findImportant important하나만 찾아서 리턴
     @Query(value = "SELECT important from memoContent where uuid=:uuid", nativeQuery = true)
@@ -36,5 +36,24 @@ public interface memoContentRepository extends JpaRepository<memoContent, String
     @Modifying
     @Query(value ="UPDATE memoContent set important=:important where uuid=:uuid", nativeQuery = true)
     int updateImportant(@Param("uuid") String uuid, @Param("important") boolean important);
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE memoContent set directory_id=:dirUUID where uuid=:memoUUID", nativeQuery = true)
+    int updateDrectory_id(@Param("dirUUID") String dirUUID, @Param("memoUUID") String memoUUID);
+
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE memoContent set directory_id=null where directory_id=:uuid", nativeQuery = true)
+    int saveNull(@Param("uuid") String uuid);
+
+    @Transactional
+    @Modifying
+    @Query(value ="UPDATE memoContent set trash=:trash where uuid=:uuid", nativeQuery = true)
+    int updateTrash(@Param("trash") boolean trash,@Param("uuid") String uuid);
+
+    @Transactional
+    @Modifying
+    @Query(value ="DELETE from memoContent where email=:email and trash = true", nativeQuery = true)
+    int deleteAll(@Param("email") String email);
 
 }

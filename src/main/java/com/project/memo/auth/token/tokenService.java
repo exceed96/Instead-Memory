@@ -1,6 +1,7 @@
 package com.project.memo.auth.token;
 
 import com.project.memo.auth.jwt.JwtService;
+import com.project.memo.exception.RefreshExpiredException;
 import com.project.memo.exception.TokenExpiredException;
 import com.project.memo.service.userService;
 import com.project.memo.web.DTO.memoDTO.memoSaveRequestDto;
@@ -26,7 +27,6 @@ public class tokenService {
     /*안써서 주석처리 나중에 지울수 있음*/
     @Transactional
     public String findRefreshtoken(String email) {
-        System.out.println("tokenService findRefreshToken :" +tokenRepository.findRefreshToken(email));
         return tokenRepository.findRefreshToken(email);
     }
     @Transactional
@@ -56,19 +56,22 @@ public class tokenService {
                 throw new TokenExpiredException();
             }
         }catch(TokenExpiredException e) {
-            response.setStatus(605);
+            response.setStatus(390);
             throw e;
         }
         return jwtToken;
     }
-    public String checkRefreshToken(HttpServletResponse response,String refresh)
+    public void checkRefreshToken(HttpServletResponse response,String refresh)
     {
         boolean check = jwtService.validateToken(refresh);
-        String email = findRefresh(refresh);//리프레스 토큰 token table이랑 같은지 확인 email이 있으면 같은거 없으면 다른거.
-        if (!check)
-            return "390";
-        else if (email.equals("")) return "382";
-        return "";
+        String email = findRefresh(refresh);//리프레스 토큰 token table이랑 같은지 확인 email이 있으면 refesh 가튼지
+        try{
+            if (!check)
+                throw new RefreshExpiredException();
+        }catch(RefreshExpiredException e2) {
+            response.setStatus(392);
+            throw e2;
+        }
     }
     @Transactional
     public void updateJWT(String refresh, String access,String email) {

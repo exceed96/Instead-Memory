@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class memoSaveRequestDto {
@@ -15,9 +17,9 @@ public class memoSaveRequestDto {
     private int bookMark;
     private String uuid;
     private int user_id; //usre idx 외래키
-    private boolean trash;
+    private LocalDateTime createdDate;
     @Builder
-    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid,int user_id,boolean trash){
+    public memoSaveRequestDto(String title,String content,String email,boolean important, int bookMark,String uuid,int user_id,LocalDateTime createdDate){
         this.title = title;
         this.content = content;
         this.email = email;
@@ -25,7 +27,7 @@ public class memoSaveRequestDto {
         this.bookMark = bookMark;
         this.uuid = uuid;
         this.user_id = user_id;
-        this.trash = trash;
+        this.createdDate = createdDate;
     }
 
     public memoContent toEntity(){
@@ -37,7 +39,7 @@ public class memoSaveRequestDto {
                 .bookMark(this.bookMark)
                 .uuid(this.uuid)
                 .user_id(this.user_id)
-                .trash(this.trash)
+                .createdDate(this.createdDate)
                 .build();
     }
 }

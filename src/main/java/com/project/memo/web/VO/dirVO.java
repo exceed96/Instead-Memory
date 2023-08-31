@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class dirVO {
     String uuid;
+    String memoUuid;
     String dirName;
 }
