@@ -1,0 +1,37 @@
+.registeredFolderListItem {
+  display: flex;
+  margin-top: 20px;
+  font-size: 18px;
+  padding: 16px;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.registeredFolderListItemModal {
+  display: flex;
+  margin-bottom: 20px;
+  font-size: 18px;
+  padding: 16px;
+  justify-content: space-between;
+  background-color: #ececec;
+  color: #7a7a7a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.registeredFolderListItemModalChoose{
+  display: flex;
+  margin-bottom: 20px;
+  font-size: 18px;
+  padding: 16px;
+  justify-content: space-between;
+  background-color: #ffffff;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
+

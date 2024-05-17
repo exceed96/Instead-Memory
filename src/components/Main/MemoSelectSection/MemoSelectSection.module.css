@@ -1,0 +1,7 @@
+.memoSelectContainer {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 20px 0px;
+  padding: 20px;
+  width: 390px;
+}

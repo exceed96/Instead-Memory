@@ -1,0 +1,20 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* width: 100vw; */
+}
+
+/* .main .savedMemo {
+  margin-top: 10px;
+} */
+
+.main .savedMemo .savedMemoContainer {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(auto-fit, minmax(360px, auto));
+  gap: 10px 20px;
+  width: 100%;
+  justify-items: center;
+}
