@@ -1,0 +1,49 @@
+.writeMemoButton {
+  width: 180px;
+  height: 120px;
+  background-color: #4839fa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.writeMemoButtonImportant {
+  width: 180px;
+  height: 120px;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.entireMemoTitle {
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+}
+
+.importantMemoTitle {
+  font-size: 25px;
+  font-weight: bold;
+  color: #747474;
+}
+
+.entireMemoCount {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+}
+
+.importantMemoCount {
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
+}

@@ -1,35 +1,27 @@
-import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
 import { Reset } from "styled-reset";
-import Header from "../Components/Header";
-import Main from "../Components/Main";
-import Footer from "../Components/Footer";
+import Main from "../components/Main/Main";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
 function MemoHomePage() {
-  const searchParams = new URLSearchParams(window.location.search);
-  localStorage.setItem("userToken", searchParams.get("AccessToken"));
-  localStorage.setItem("userRefreshToken", searchParams.get("RefreshToken"));
-  const user = jwt_decode(searchParams.get("AccessToken"));
-  const getUrl =
-    "http://ec2-3-34-168-144.ap-northeast-2.compute.amazonaws.com:8080/v1/memo/find";
-  const header = {
-    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-  };
-  useEffect(async () => {
-    const data = await axios({
-      method: "get",
-      url: getUrl,
-      headers: header,
-    });
-    console.log(data);
-  }, []);
+  if (!localStorage.getItem("userToken")) {
+    const searchParams = new URLSearchParams(window.location.search);
+    localStorage.setItem("userToken", searchParams.get("AccessToken"));
+    let currentUrl = window.location.href;
+    let newUrl = currentUrl.replace(/\/\?AccessToken=.*/, "");
+    window.history.replaceState({}, document.title, newUrl);
+  }
+
+  const user = jwt_decode(localStorage.getItem("userToken"));
   return (
     <>
       <Reset />
       <Header user={user.username}></Header>
       <Main />
       <Footer />
+      <Outlet />
     </>
   );
 }

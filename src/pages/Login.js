@@ -1,6 +1,11 @@
-import LoginComponent from "../Components/LoginComponent";
+import { useEffect } from "react";
+import LoginComponent from "../components/Main/LoginComponent/LoginComponent";
 
 function LoginPage() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <LoginComponent />

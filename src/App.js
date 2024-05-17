@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import "./App.css";
 import { Reset } from "styled-reset";
-import Header from "./Components/Header";
-import Main from "./Components/Main";
-import Footer from "./Components/Footer";
-import jwt_decode from "jwt-decode";
-import axios from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MemoHomePage from "./pages/MemoHome";
 import LoginPage from "./pages/Login";
+import ErrorPage from "./pages/Error";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <LoginPage />,
   },
   {
     path: "/memo",
     element: <MemoHomePage />,
+  },
+  {
+    path: "/error",
+    element: <ErrorPage />,
   },
 ]);
 
@@ -26,10 +26,6 @@ function App() {
       <RouterProvider router={router}>
         <Reset />
       </RouterProvider>
-      {/* <Reset />
-      <Header user={user.username}></Header>
-      <Main />
-      <Footer /> */}
     </>
   );
 }

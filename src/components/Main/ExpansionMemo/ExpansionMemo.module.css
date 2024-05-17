@@ -1,0 +1,87 @@
+:root {
+  --main-memo-width: 300px;
+  /* --main-memo-height: 500px; */
+  --main-memo-boxShadow: 2px 2px 2px gray;
+  --main-memo-titleFontSize: 20px;
+  --main-memo-textFontsize: 16px;
+  --main-memo-titleTextPadding: 5px;
+  --main-box-borderRadius: 10px;
+  --main-box-transition: box-shadow 0.3s ease-in-out;
+}
+
+.memo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.memo .writeMemo {
+  width: 320px;
+  height: 450px;
+  margin: 36px;
+  border-radius: var(--main-box-borderRadius);
+  padding: 20px;
+  transition: var(--main-box-transition);
+  cursor: pointer;
+  z-index: 2;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.memo .writeMemo .writeMemoTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 32px;
+}
+
+.memo .writeMemo .writeMemoTop .memo-title {
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  font-size: 30px;
+  width: 280px;
+  border: none;
+  outline: none;
+}
+
+.memo .writeMemo .writeMemoMiddle .memo-text {
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  resize: none;
+  font-size: 18px;
+  width: 300px;
+  height: 340px;
+  border: none;
+  outline: none;
+}
+
+.memo .writeMemo .writeMemoBottom {
+  font-size: 32px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.memo .writeMemo .writeMemoBottom i {
+  margin-left: 10px;
+  align-items: center;
+}
+
+.memo .writeMemo .writeMemoBotton img {
+  width: 32px;
+  height: 32px;
+}
+
+.solidStar{
+  width: 32px;
+  height: 32px;
+}
+
+.modalOverlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
